@@ -7,6 +7,7 @@ from tkinter import messagebox
 
 import tkinter.simpledialog as tksd
 
+import status_bar
 import synonym_search
 import part_speech_search
 # import search_pop
@@ -33,18 +34,21 @@ master.geometry("400x380")
 
 ment = StringVar()
 labelText = StringVar()
-labelText = ""
+# labelText = ""
 # create text object
 text = Text(master, width=400, height=380, font=("Andale Mono", 12), highlightthickness=0, bd=2)
 
 # mEntry = Entry(master, textvariable=ment).pack()
 # mbutton = Button(master, text="Search", command=search_synonyms, fg="red", bg="blue").pack()
-# status bar
-status = Label(master, text=labelText, bd=1, relief=SUNKEN, anchor=W)
+# # status bar
+# status = Label(master, text=labelText, bd=1, relief=SUNKEN, anchor=W)
+# status.pack(side=BOTTOM, fill=X)
+status = status_bar.StatusBar(master)
 status.pack(side=BOTTOM, fill=X)
 
-
 text.pack()
+
+
 
 
 # Methods
@@ -132,12 +136,22 @@ def search_synonyms():
         
         text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
         text.tag_config("tag", background="yellow", foreground="black")
-    labelText.set("Synonym search complete")
-    master.update_idletasks()
+        #status.set("Synonym search complete: " + "word: " + str(item[0]) + " line: " + str(item[1]) +" , " + " column: " + str(item[2]))
+    status.set("Synonym search complete: .." + str(list_tuple_to_string(word_syns)))
+
+    # labelText= str("Synonym search complete")
+    # print(labelText)
+    # status = Label(master, text=labelText, bd=1, relief=SUNKEN, anchor=W)
+    # status.pack()
+    #master.update_idletasks()
+    # status.update_idletasks()
+
+
 
 
 
 def part_speach():
+    #status.set("")
     text.tag_remove("tag", "1.0", END)
 
     ment = tksd.askstring("Dialog (String)", "Enter your grammar search:", parent=master)
@@ -162,10 +176,11 @@ def part_speach():
         text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
         text.tag_config("tag", background="orange", foreground="black")
 
+    status.set("Part of speech search complete: .." + str(list_tuple_to_string(word_pspeech)))
 # print(the_text)
 
 
-def sentiment():
+def entity():
     text.tag_remove("tag", "1.0", END)
 
     ment = tksd.askstring("Dialog (String)", "Enter your type search:", parent=master)
@@ -189,8 +204,17 @@ def sentiment():
         text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
         text.tag_config("tag", background="green", foreground="black")
 
+    status.set("Entity search complete: .." + str(list_tuple_to_string(word_pspeech)))
+
+
 def levenshtein():
     pass
+
+def list_tuple_to_string(list):
+    result = ""
+    for item in list:
+        result += item[0] + ".. "
+    return result
 
 
 # File Menu
@@ -224,7 +248,7 @@ edit_menu.add_command(label="Select All", command=select_all)
 search_menu = Menu(menu)
 menu.add_cascade(label="Search", menu=search_menu)
 search_menu.add_command(label="Synonyms", command=search_synonyms)
-search_menu.add_command(label="Entity Analysis", command = sentiment)
+search_menu.add_command(label="Entity Analysis", command = entity)
 
 
 # mEntry = Entry(search_menu, textvariable=ment).pack()
