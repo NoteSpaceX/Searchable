@@ -6,6 +6,9 @@ from watson_developer_cloud import NaturalLanguageClassifierV1
 
 # TODO: if word is not in the text
 # TODO: if word is two words
+import synonym_search
+
+
 class GetData:
     @staticmethod
     def classifier(text_str):
@@ -68,9 +71,9 @@ class GetData:
                     if entity_type == lower_search_word and entity['text'] not in word_types:
                         word_types.append(entity['text'])
                         #TODO: NLTK CODE - TO GET SYNONYMS
-                        # synonyms = searchable.concept_search.synonyms(entity_text)
+                        synonyms = synonym_search.synonyms(entity_type)
                         #TODO: Remove below temp code
-                        synonyms = ['customer', 'body', 'character', 'guy', 'human', 'man', 'woman', 'being', 'somebody', 'individual']
+                        # synonyms = ['customer', 'body', 'character', 'guy', 'human', 'man', 'woman', 'being', 'somebody', 'individual']
                         for synonym in synonyms:
                             lower_synonym = str.lower(synonym)
                             lower_text_str = str.lower(text_str)
