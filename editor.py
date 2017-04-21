@@ -17,7 +17,7 @@ import part_speech_search
 
 # TODO: make a method that transforms grammar acronym to words
 # TODO: High light the word search taht you enter for synonyms in a different color
-# TODO: refresh method because highlighted remain highlighted
+# TODO: highlight repeated words (make sure)
 # TODO: error for invalid searches
 # TODO: give appriate names(entity analysis)
 # TODO: status bar
@@ -32,12 +32,18 @@ master.title("Searchable")
 master.geometry("400x380")
 
 ment = StringVar()
-
+labelText = StringVar()
+labelText = ""
 # create text object
 text = Text(master, width=400, height=380, font=("Andale Mono", 12), highlightthickness=0, bd=2)
 
 # mEntry = Entry(master, textvariable=ment).pack()
 # mbutton = Button(master, text="Search", command=search_synonyms, fg="red", bg="blue").pack()
+# status bar
+status = Label(master, text=labelText, bd=1, relief=SUNKEN, anchor=W)
+status.pack(side=BOTTOM, fill=X)
+
+
 text.pack()
 
 
@@ -100,39 +106,23 @@ def tool_bar():
 
 
 
-
-
-
 def search_synonyms():
-    # messagebox.showinfo("Search: ", "Hello World")
-    # print("hi")
-    # mesg_box = take_input.getText("Search")
-    # search_word = mesg_box.getString()
-    # print(messagebox)
-    # print(search_word)
-    
-    
-    # TODO
-    
-    # mEntry = Entry(master, textvariable=ment).pack()
-    # mbutton = Button(master, text="Search", command=search_synonyms, fg="red", bg="blue").pack()
-    
-    # app = tool_bar()
-    
+
+    text.tag_remove("tag", "1.0", END)
+
     ment = tksd.askstring("Dialog (String)", "Enter your search:", parent=master)
     print(ment)
     # ment = pop_up.MyDialog.ok()
     search_word = str(ment)
-    # print(search_word)
-    
+
     # get the text from the text editor
     the_text = text.get("1.0", END)
-    
+
     result_dict = synonym_search.word_to_concepts(the_text, the_text)
     print(result_dict)
     
     if search_word not in result_dict:
-        # TODO : pop up?
+        messagebox.showinfo("Synonym", "Search word not found.")
         return
     else:
         word_syns = result_dict[search_word]
@@ -142,11 +132,14 @@ def search_synonyms():
         
         text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
         text.tag_config("tag", background="yellow", foreground="black")
+    labelText.set("Synonym search complete")
+    master.update_idletasks()
 
-# print(the_text)
 
 
 def part_speach():
+    text.tag_remove("tag", "1.0", END)
+
     ment = tksd.askstring("Dialog (String)", "Enter your grammar search:", parent=master)
     print(ment)
     part_word = str(ment)
@@ -158,7 +151,7 @@ def part_speach():
     print(r_dict)
     
     if part_word not in r_dict:
-        # TODO : pop up?
+        messagebox.showinfo("Part of Speech", "Part of speech word not found.")
         return
     else:
         word_pspeech = r_dict[part_word]
@@ -173,6 +166,8 @@ def part_speach():
 
 
 def sentiment():
+    text.tag_remove("tag", "1.0", END)
+
     ment = tksd.askstring("Dialog (String)", "Enter your type search:", parent=master)
     print(ment)
     s_word = str(ment)
@@ -183,7 +178,7 @@ def sentiment():
     print(s_dict)
     
     if s_word not in s_dict:
-        # TODO : pop up?
+        messagebox.showinfo("Entity Analysis", "Type not found.")
         return
     else:
         word_pspeech = s_dict[s_word]
@@ -229,7 +224,7 @@ edit_menu.add_command(label="Select All", command=select_all)
 search_menu = Menu(menu)
 menu.add_cascade(label="Search", menu=search_menu)
 search_menu.add_command(label="Synonyms", command=search_synonyms)
-search_menu.add_command(label="Sentiment Analysis", command = sentiment)
+search_menu.add_command(label="Entity Analysis", command = sentiment)
 
 
 # mEntry = Entry(search_menu, textvariable=ment).pack()
@@ -243,4 +238,6 @@ extra_menu.add_cascade(label="Levenshtein", command=levenshtein)
 
 # B1 = tkinter.Button(master, text="Search", command=search_synonyms)
 # B1.pack()
+
+
 master.mainloop()
