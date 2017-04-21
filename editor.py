@@ -14,7 +14,7 @@ import part_speech_search
 #
 # from take_input import takeInput
 
-
+# TODO: if user types in nothing in the editor
 # TODO: make a method that transforms grammar acronym to words
 # TODO: High light the word search taht you enter for synonyms in a different color
 # TODO: highlight repeated words (make sure)
