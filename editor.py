@@ -198,8 +198,8 @@ menu = Menu(master)
 # set menu and makes main menu
 master.config(menu=menu)
 file_menu = Menu(menu)
-menu.add_cascade(label="File", menu=file_menu)
 
+menu.add_cascade(label="File", menu=file_menu)
 file_menu.add_command(label="New", command=new)
 file_menu.add_command(label="Open", command=open_file)
 file_menu.add_separator()
