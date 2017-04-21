@@ -14,7 +14,7 @@ import part_speech_search
 # import take_input
 #
 # from take_input import takeInput
-
+#
 # TODO: if user types in nothing in the editor
 # TODO: make a method that transforms grammar acronym to words
 # TODO: High light the word search taht you enter for synonyms in a different color
@@ -133,11 +133,14 @@ def search_synonyms():
 
     for item in word_syns:
         print("word: " + str(item[0]) + " line: " + str(item[1]) +" , " + " column: " + str(item[2]))
-        
-        text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
-        text.tag_config("tag", background="yellow", foreground="black")
+
+        if item[2] is None:
+            continue
+        else:
+            text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
+            text.tag_config("tag", background="yellow", foreground="black")
         #status.set("Synonym search complete: " + "word: " + str(item[0]) + " line: " + str(item[1]) +" , " + " column: " + str(item[2]))
-    status.set("Synonym search complete: .." + str(list_tuple_to_string(word_syns)))
+    status.set("Synonym search complete for: " + search_word)
 
     # labelText= str("Synonym search complete")
     # print(labelText)
@@ -172,11 +175,14 @@ def part_speach():
 
     for item in word_pspeech:
         print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
-        
-        text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
-        text.tag_config("tag", background="orange", foreground="black")
 
-    status.set("Part of speech search complete: .." + str(list_tuple_to_string(word_pspeech)))
+        if item[2] is None:
+            continue
+        else:
+            text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
+            text.tag_config("tag", background="orange", foreground="black")
+
+    status.set("Part of speech search complete for:  " + part_word)
 # print(the_text)
 
 
@@ -200,21 +206,19 @@ def entity():
 
     for item in word_pspeech:
         print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
-        
-        text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
-        text.tag_config("tag", background="green", foreground="black")
 
-    status.set("Entity search complete: .." + str(list_tuple_to_string(word_pspeech)))
+        if item[2] is None:
+            continue
+
+        else:
+            text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
+            text.tag_config("tag", background="green", foreground="black")
+
+    status.set("Entity search complete for: " + s_word)
 
 
 def levenshtein():
     pass
-
-def list_tuple_to_string(list):
-    result = ""
-    for item in list:
-        result += item[0] + ".. "
-    return result
 
 
 # File Menu
