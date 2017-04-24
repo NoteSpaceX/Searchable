@@ -1,6 +1,6 @@
 import nltk
 
-import Navigate
+from EditorUtils import Navigate
 
 
 class Categorize:

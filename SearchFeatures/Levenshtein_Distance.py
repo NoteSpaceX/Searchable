@@ -1,5 +1,7 @@
-import Navigate
 import numbers
+
+from EditorUtils import Navigate
+
 
 #Todo: 'NoneType' object is not iterable
 

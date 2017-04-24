@@ -1,15 +1,12 @@
+import tkinter.simpledialog as tksd
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 
-import tkinter.simpledialog as tksd
-
-import EditDistanceForSentences
-import levenshtein_distance
-import status_bar
-import synonym_search
-import part_speech_search
-import entity_analysis
+from EditorUtils import Status_Bar
+from Resources import levenshtein_distance, part_speech_search
+from SearchFeatures import Edit_Distance_For_Sentences, Entity_Analysis, Synonym_Search, Part_Speech_Search, \
+    Levenshtein_Distance
 
 # TODO: highlight repeated words (make sure)
 # TODO: Ignroe punctuation
@@ -24,7 +21,7 @@ text = Text(master, width=400, height=380, font=("Andale Mono", 12), highlightth
 
 labelText = StringVar()
 
-status = status_bar.StatusBar(master)
+status = Status_Bar.StatusBar(master)
 status.pack(side=BOTTOM, fill=X)
 text.pack()
 
@@ -96,7 +93,7 @@ def search_synonyms():
 
         search_word = str(ment).lower()
 
-        result_dict = synonym_search.word_to_concepts(the_text, the_text)
+        result_dict = Synonym_Search.word_to_concepts(the_text, the_text)
         print(result_dict)
 
         if search_word not in result_dict:
@@ -130,8 +127,8 @@ def part_speech():
         ment = tksd.askstring("Part of Speech Search", "Enter your grammar search:", parent=master)
         part_word = str(ment).lower()
 
-        pos_acr_list = part_speech_search.part_of_speech_to_tag(part_word)
-        r_dict = part_speech_search.make_dict(the_text, the_text)
+        pos_acr_list = Part_Speech_Search.part_of_speech_to_tag(part_word)
+        r_dict = Part_Speech_Search.make_dict(the_text, the_text)
 
         print(r_dict)
 
@@ -166,7 +163,7 @@ def entity():
         ment = tksd.askstring("Entity Search", "Enter your type search:", parent=master)
         s_word = str(ment).lower()
 
-        s_dict = entity_analysis.create_dict(s_word, the_text, the_text)
+        s_dict = Entity_Analysis.create_dict(s_word, the_text, the_text)
         print(s_dict)
 
         if s_word not in s_dict:
@@ -201,10 +198,10 @@ def levenshtein():
         word = str(ment).lower()
         other_word = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
 
-        l_dict = levenshtein_distance.find_word(word, other_word, the_text, the_text)
+        l_dict = Levenshtein_Distance.find_word(word, other_word, the_text, the_text)
 
         print(l_dict)
-        lev_distance = levenshtein_distance.minimumEditDistance(word, other_word, the_text)[2]
+        lev_distance = Levenshtein_Distance.minimumEditDistance(word, other_word, the_text)[2]
 
         if word not in the_text and other_word not in the_text:
             messagebox.showinfo("Levenshtein", "Word not in text.")
@@ -238,7 +235,7 @@ def editDistanceForSentence():
 
         sentence_two = tksd.askstring("Edit Distance for Sentence", "Enter your levenshtein distance search:",parent=master)
 
-        distance_value = EditDistanceForSentences.LDforSentences(sentence_one, sentence_two)
+        distance_value = Edit_Distance_For_Sentences.LDforSentences(sentence_one, sentence_two)
 
         if sentence_one in the_text and sentence_two in the_text:
             messagebox.showinfo("Edit Distance for Sentence", distance_value)
