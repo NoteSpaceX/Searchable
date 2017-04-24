@@ -12,12 +12,11 @@ import status_bar
 import synonym_search
 import part_speech_search
 import entity_analysis
+import part_of_speech_to_tag
 
 # TODO: if user types in nothing in the editor
 # TODO: highlight repeated words (make sure)
 # TODO: error for invalid searches
-
-
 
 # set up the frame
 master = Tk()
@@ -48,7 +47,6 @@ status = status_bar.StatusBar(master)
 status.pack(side=BOTTOM, fill=X)
 
 text.pack()
-
 
 # Methods
 def new():
@@ -104,9 +102,10 @@ def delete_all():
 
 def search_synonyms():
     text.tag_remove("tag", "1.0", END)
-
+    
     ment = tksd.askstring("Search Synonyms", "Enter your search:", parent=master)
     print(ment)
+
     # ment = pop_up.MyDialog.ok()
     search_word = str(ment)
 
@@ -131,37 +130,51 @@ def search_synonyms():
             text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
             text.tag_config("tag", background="yellow", foreground="black")
     status.set("Synonym search complete for: " + search_word)
+    
+    
+def part_speech():
 
-def part_speach():
-    # status.set("")
     text.tag_remove("tag", "1.0", END)
 
-    ment = tksd.askstring("Dialog (String)", "Enter your grammar search:", parent=master)
-    print(ment)
+    ment = tksd.askstring("Part of Speech Search", "Enter your grammar search:", parent=master)
+    print("ment: ", ment)
     part_word = str(ment)
-
+    
+    print('part_word', part_word)
+    
     # get the text from the text editor
     the_text = text.get("1.0", END)
 
-    r_dict = part_speech_search.make_dict(part_word, the_text, the_text)
-    print(r_dict)
+    #TODO: Change file name?
+    pos_acr_list = part_speech_search.part_of_speech_to_tag(part_word)
+    print("pos_acr_list: ", pos_acr_list)
+    r_dict = part_speech_search.make_dict(the_text, the_text)
 
     if part_word not in r_dict:
         messagebox.showinfo("Part of Speech", "Part of speech word not found.")
         return
     else:
         word_pspeech = r_dict[part_word]
+    
+    print("r_dict: ", r_dict)
 
-    for item in word_pspeech:
-        print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
+    for pos_acr in pos_acr_list:
+        # if pos_acr not in r_dict.keys():
+        #     messagebox.showinfo("Part of Speech", "Part of speech word not found.")
+        #     return
+        if pos_acr in r_dict.keys():
+            #else:
+            word_speech = r_dict[pos_acr]
+            print('word_speech:', word_speech)
 
-        if item[2] is None:
-            continue
-        else:
-            text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
-            text.tag_config("tag", background="orange", foreground="black")
-
-    status.set("Part of speech search complete for:  " + part_word)
+            for item in word_speech:
+                print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
+                if item[2] is None:
+                  continue
+                else:  
+                  text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
+                  text.tag_config("tag", background="orange", foreground="black")
+      status.set("Part of speech search complete for:  " + part_word)
 
 
 def entity():
@@ -236,8 +249,8 @@ menu = Menu(master)
 # set menu and makes main menu
 master.config(menu=menu)
 file_menu = Menu(menu)
-menu.add_cascade(label="File", menu=file_menu)
 
+menu.add_cascade(label="File", menu=file_menu)
 file_menu.add_command(label="New", command=new)
 file_menu.add_command(label="Open", command=open_file)
 file_menu.add_separator()
@@ -267,7 +280,7 @@ search_menu.add_command(label="Entity Analysis", command=entity)
 # mEntry = Entry(search_menu, textvariable=ment).pack()
 grammar_menu = Menu(menu)
 menu.add_cascade(label="Grammar", menu=grammar_menu)
-grammar_menu.add_cascade(label="Part of Speech", command=part_speach)
+grammar_menu.add_cascade(label="Part of Speech", command=part_speech)
 
 extra_menu = Menu(menu)
 menu.add_cascade(label="Extra", menu=extra_menu)

@@ -72,7 +72,9 @@ class GetData:
                         word_types.append(entity['text'])
                         #TODO: NLTK CODE - TO GET SYNONYMS
                         synonyms = synonym_search.synonyms(entity_type)
-                        #TODO: Remove below temp code
+                        print('synonyms: ', synonyms)
+                        # TODO: Remove below temp code
+                        # synonyms = find_word(word, body, the_text)
                         # synonyms = ['customer', 'body', 'character', 'guy', 'human', 'man', 'woman', 'being', 'somebody', 'individual']
                         for synonym in synonyms:
                             lower_synonym = str.lower(synonym)
@@ -82,39 +84,40 @@ class GetData:
                     # if entity_text == lower_search_word and entity_type not in word_types:
                     #     print('hello')
                     #     word_types.append(entity_type)
+        print('word types:', word_types)
         return word_types
 
-text_str = 'videos of a United Airlines passenger being forcibly dragged from his seat on a Sunday overbooked flight at O\'Hare International Airport have been viewed more than 1 million times, and the airline\'s CEO on Monday called the incident \"an upsetting event to all of us here at United. I apologize for having to re-accommodate these customers. Our team is moving with a sense of urgency to work with the authorities and conduct our own detailed review of what happened,\" United CEO Oscar Munoz said in a statement Monday. Munoz said the airline is trying to reach the passenger to further address and resolve this situation.In videos of the incident aboard a flight bound for Louisville, Ky., a man screams as security officers pull him from his seat. He then falls silent as they drag him by the hands, with his glasses askew and his shirt pulled up over his abdomen, down the aisle. Several passengers yell at the officers. \"Oh my God, look at what you did to him,\" one woman yells'
-
-GetData.classifier(text_str)
-
-types = GetData.find_type(text_str, 'Person')
-print('types:', types)
-
-emotion = GetData.get_emotion(text_str)
-print('emotion(s):', emotion)
-
-sentiment = GetData.get_sentiment(text_str)
-print(sentiment)
-
-
+# text_str = 'videos of a United Airlines passenger being forcibly dragged from his seat on a Sunday overbooked flight at O\'Hare International Airport have been viewed more than 1 million times, and the airline\'s CEO on Monday called the incident \"an upsetting event to all of us here at United. I apologize for having to re-accommodate these customers. Our team is moving with a sense of urgency to work with the authorities and conduct our own detailed review of what happened,\" United CEO Oscar Munoz said in a statement Monday. Munoz said the airline is trying to reach the passenger to further address and resolve this situation.In videos of the incident aboard a flight bound for Louisville, Ky., a man screams as security officers pull him from his seat. He then falls silent as they drag him by the hands, with his glasses askew and his shirt pulled up over his abdomen, down the aisle. Several passengers yell at the officers. \"Oh my God, look at what you did to him,\" one woman yells'
+#
+# GetData.classifier(text_str)
+#
+# types = GetData.find_type(text_str, 'Person')
+# print('types:', types)
+#
+# emotion = GetData.get_emotion(text_str)
+# print('emotion(s):', emotion)
+#
+# sentiment = GetData.get_sentiment(text_str)
+# print(sentiment)
 
 dict = {}
 
+
 def create_dict(word,body, text):
     word_list = GetData.find_type(body, word)
+    print("word_list: ", word_list)
 
     # iterate through the list of synonyms
     for item in word_list:
         sublist = []
 
-        # TODO: fix "sample.txt"
-
         # make sure not getting the same word
         if not item == word:
             # make a list and add item, page number, column number to it
             sublist.append(item)
+            print('line#', Navigate.Navigate.get_line(item, text))
             sublist.append(Navigate.Navigate.get_line(item, text))
+            print('column#', Navigate.Navigate.get_specific_column_number(item, text))
             sublist.append(Navigate.Navigate.get_specific_column_number(item, text))
 
             # turn the list into tuple
@@ -123,6 +126,7 @@ def create_dict(word,body, text):
                 dict[word] = [item_tuple]
             elif word in dict and item in body and item_tuple not in dict[word]:
                 dict[word].append(item_tuple)
+        print(dict)
     return dict
 
 #
