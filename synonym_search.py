@@ -1,6 +1,3 @@
-from tkinter import END
-
-import nltk
 from nltk.corpus import wordnet as wn
 
 import Navigate
@@ -22,12 +19,9 @@ dict = {}
 def find_word(word, body, the_text):
     word_list = synonyms(word)
 
-
     # iterate through the list of synonyms
     for item in word_list:
         sublist = []
-
-        # TODO: fix "sample.txt"
 
         # make sure not getting the same word
         if not item == word:
@@ -45,13 +39,8 @@ def find_word(word, body, the_text):
 
 
 def word_to_concepts(text, the_text):
-    # text_file = open(file_name,"r")
-    # text = text_file.read()
     text = text.split()
 
     for item in text:
         find_word(item, text, the_text)
     return dict
-
-
-# print(word_to_concepts(text))

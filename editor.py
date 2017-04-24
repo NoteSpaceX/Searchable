@@ -146,14 +146,12 @@ def part_speech():
     r_dict = part_speech_search.make_dict(the_text, the_text)
 
     if pos_acr_list is None:
-        print("message box??")
-        messagebox.showinfo("Part of Speech", ment + "not found")
+        messagebox.showinfo("Part of Speech", ment + " not found")
         return
 
     for pos_acr in pos_acr_list:
         if pos_acr in r_dict.keys():
             word_speech = r_dict[pos_acr]
-            print('word_speech:', word_speech)
 
             for item in word_speech:
                 print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
@@ -178,7 +176,7 @@ def entity():
     print(s_dict)
 
     if s_word not in s_dict:
-        messagebox.showinfo("Entity Analysis", "Type not found.")
+        messagebox.showinfo("Entity Analysis", s_word + " Type not found.")
         return
     else:
         word_speech = s_dict[s_word]

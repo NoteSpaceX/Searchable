@@ -7,10 +7,8 @@ class Categorize:
     # stores each word in a line in a list
     def text_dictionary(self):
         dict = {}
-        # sentences = nltk.sent_tokenize(self)
         tokens = nltk.word_tokenize(self)
         tagged = nltk.pos_tag(tokens)
-        #print('tagged' + tagged)
         
         for item in tagged:
             key = item[1]
@@ -39,7 +37,6 @@ def part_of_speech_to_tag(part_of_speech):
 def make_dict(body, text):
     # take the categorize dictionary
     categorize_dict = Categorize.text_dictionary(text)
-    print('categorize_dict:', categorize_dict)
     
     # make the new dictionary that we will return
     new_dict = {}
@@ -49,12 +46,9 @@ def make_dict(body, text):
 
         # iterate through the values because the dictionary contains a list of values as value
         for item in value:
-            sublist = []
-            
-            sublist.append(item)
-            sublist.append(Navigate.Navigate.get_line(item, text))
-            sublist.append(Navigate.Navigate.get_specific_column_number(item, text))
-            
+            sublist = [item, Navigate.Navigate.get_line(item, text),
+                       Navigate.Navigate.get_specific_column_number(item, text)]
+
             item_tuple = tuple(sublist)
             
             if key not in new_dict and item_tuple[0] in body:
