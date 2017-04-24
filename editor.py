@@ -4,10 +4,12 @@ from tkinter import messagebox
 
 import tkinter.simpledialog as tksd
 
+import EditDistanceForSentences
 import levenshtein_distance
 import status_bar
 import synonym_search
 import part_speech_search
+import entity_analysis
 
 # TODO: if user types in nothing in the editor
 # TODO: highlight repeated words (make sure)
@@ -28,12 +30,12 @@ text.config(
     foreground="white",
     width="300",
     background="black",
-    insertbackground="white", # cursor
-    selectforeground="white", # selection
+    insertbackground="white",  # cursor
+    selectforeground="white",  # selection
     selectbackground="#008000",
-    wrap=WORD, # use word wrapping
-    undo=True, # Tk 8.4
-    )
+    wrap=WORD,  # use word wrapping
+    undo=True,  # Tk 8.4
+)
 
 ment = StringVar()
 labelText = StringVar()
@@ -42,6 +44,7 @@ status = status_bar.StatusBar(master)
 status.pack(side=BOTTOM, fill=X)
 
 text.pack()
+
 
 # Methods
 def new():
@@ -95,9 +98,10 @@ def select_all():
 def delete_all():
     text.delete(1.0, END)
 
+
 def search_synonyms():
     text.tag_remove("tag", "1.0", END)
-    
+
     ment = tksd.askstring("Search Synonyms", "Enter your search:", parent=master)
     print(ment)
 
@@ -125,17 +129,17 @@ def search_synonyms():
             text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
             text.tag_config("tag", background="yellow", foreground="black")
     status.set("Synonym search complete for: " + search_word)
-    
-    
+
+
 def part_speech():
     text.tag_remove("tag", "1.0", END)
 
     ment = tksd.askstring("Part of Speech Search", "Enter your grammar search:", parent=master)
     print("ment: ", ment)
     part_word = str(ment)
-    
+
     print('part_word', part_word)
-    
+
     # get the text from the text editor
     the_text = text.get("1.0", END)
 
@@ -157,9 +161,11 @@ def part_speech():
                 print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
                 if item[2] is None:
                     continue
-                else:  
-                  text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
-                  text.tag_config("tag", background="orange", foreground="black")
+                else:
+                    text.tag_add("tag", str(item[1]) + "." + str(item[2]),
+                                 str(item[1]) + "." + str(len(item[0]) + item[2]))
+                    text.tag_config("tag", background="orange", foreground="black")
+
     status.set("Part of speech search complete for:  " + part_word)
 
 
@@ -197,11 +203,10 @@ def entity():
 def levenshtein():
     text.tag_remove("tag", "1.0", END)
 
-
     ment = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
     print(ment)
     word = str(ment)
-    other_word = tksd.askstring("Dialog (String)", "Enter your levenshtein distance search:", parent=master)
+    other_word = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
 
     the_text = text.get("1.0", END)
 
@@ -228,6 +233,28 @@ def levenshtein():
             text.tag_config("tag", background="green", foreground="black")
 
     status.set("Levenshtein distance for : " + word + " " + other_word)
+
+
+def editDistanceForSentence():
+    text.tag_remove("tag", "1.0", END)
+
+    sentence_one = tksd.askstring("Edit Distance for Sentence", "Enter your levenshtein distance search:",
+                                  parent=master)
+    # print(ment)
+    # sentence_one = str(ment)
+    sentence_two = tksd.askstring("Edit Distance for Sentence", "Enter your levenshtein distance search:",
+                                  parent=master)
+
+    distance_value = EditDistanceForSentences.LDforSentences(sentence_one, sentence_two)
+
+    the_text = text.get("1.0", END)
+
+    if sentence_one in the_text and sentence_two in the_text:
+        messagebox.showinfo("Edit Distance for Sentence", distance_value)
+    else:
+        messagebox.showinfo("Edit Distance for Sentence", "Sentence not in text.")
+
+    status.set("Edit Distance for Sentence: " + sentence_one + " " + sentence_two)
 
 
 # File Menu
@@ -271,8 +298,8 @@ grammar_menu.add_cascade(label="Part of Speech", command=part_speech)
 extra_menu = Menu(menu)
 menu.add_cascade(label="Extra", menu=extra_menu)
 extra_menu.add_cascade(label="Levenshtein", command=levenshtein)
+extra_menu.add_cascade(label="Edit Distance for Sentences", command=editDistanceForSentence)
 
 text.focus_set()
-
 
 master.mainloop()
