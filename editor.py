@@ -156,7 +156,7 @@ def part_speech():
             for item in word_speech:
                 print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
                 if item[2] is None:
-                  continue
+                    continue
                 else:  
                   text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
                   text.tag_config("tag", background="orange", foreground="black")
