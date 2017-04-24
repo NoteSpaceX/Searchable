@@ -103,16 +103,13 @@ def search_synonyms():
     text.tag_remove("tag", "1.0", END)
 
     ment = tksd.askstring("Search Synonyms", "Enter your search:", parent=master)
-    print(ment)
 
-    # ment = pop_up.MyDialog.ok()
-    search_word = str(ment)
+    search_word = str(ment).lower()
 
     # get the text from the text editor
     the_text = text.get("1.0", END)
 
     result_dict = synonym_search.word_to_concepts(the_text, the_text)
-    print(result_dict)
 
     if search_word not in result_dict:
         messagebox.showinfo("Synonym", "Search word not found.")
@@ -135,16 +132,12 @@ def part_speech():
     text.tag_remove("tag", "1.0", END)
 
     ment = tksd.askstring("Part of Speech Search", "Enter your grammar search:", parent=master)
-    print("ment: ", ment)
-    part_word = str(ment)
-
-    print('part_word', part_word)
+    part_word = str(ment).lower()
 
     # get the text from the text editor
     the_text = text.get("1.0", END)
 
     pos_acr_list = part_speech_search.part_of_speech_to_tag(part_word)
-    print("pos_acr_list: ", pos_acr_list)
     r_dict = part_speech_search.make_dict(the_text, the_text)
 
     if pos_acr_list is None:
@@ -171,13 +164,11 @@ def entity():
     text.tag_remove("tag", "1.0", END)
 
     ment = tksd.askstring("Entity Search", "Enter your type search:", parent=master)
-    print(ment)
-    s_word = str(ment)
+    s_word = str(ment).lower()
 
     the_text = text.get("1.0", END)
 
     s_dict = entity_analysis.create_dict(s_word, the_text, the_text)
-    print(s_dict)
 
     if s_word not in s_dict:
         messagebox.showinfo("Entity Analysis", s_word + " Type not found.")
@@ -202,8 +193,7 @@ def levenshtein():
     text.tag_remove("tag", "1.0", END)
 
     ment = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
-    print(ment)
-    word = str(ment)
+    word = str(ment).lower()
     other_word = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
 
     the_text = text.get("1.0", END)
