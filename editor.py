@@ -11,7 +11,7 @@ import levenshtein_distance
 import status_bar
 import synonym_search
 import part_speech_search
-import part_of_speech_to_tag
+
 # import search_pop
 # import take_input
 #
@@ -165,11 +165,12 @@ def part_speech():
     print("pos_acr_list: ", pos_acr_list)
     r_dict = part_speech_search.make_dict(the_text, the_text)
 
-    if part_word not in r_dict:
-        messagebox.showinfo("Part of Speech", "Part of speech word not found.")
+    if pos_acr_list is None:
+        print("message box??")
+        messagebox.showinfo("Part of Speech", ment + "not found")
         return
-    else:
-        word_pspeech = r_dict[part_word]
+    # else:
+    #     word_speech = r_dict[part_word]
     
     print("r_dict: ", r_dict)
 
@@ -189,7 +190,7 @@ def part_speech():
                 else:  
                   text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
                   text.tag_config("tag", background="orange", foreground="black")
-      status.set("Part of speech search complete for:  " + part_word)
+    status.set("Part of speech search complete for:  " + part_word)
 
 
 # print(the_text)
