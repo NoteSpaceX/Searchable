@@ -46,5 +46,5 @@ def LDforSentences(s1, s2):
             ld = abs(dict[ps1[i]] - dict[ps2[i]]) + ld
 
     return ld
-
-print(LDforSentences("how are you", "my name is Anna"))
+#
+# print(LDforSentences("how are you", "my name is Anna"))

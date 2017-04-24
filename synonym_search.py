@@ -27,8 +27,6 @@ def find_word(word, body, the_text):
     for item in word_list:
         sublist = []
 
-        # TODO: fix "sample.txt"
-
         # make sure not getting the same word
         if not item == word:
             # make a list and add item, page number, column number to it

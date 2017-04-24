@@ -11,38 +11,20 @@ import synonym_search
 import part_speech_search
 import entity_analysis
 
-# TODO: if user types in nothing in the editor
 # TODO: highlight repeated words (make sure)
-# TODO: error for invalid searches
 
 # set up the frame
 master = Tk()
 master.title("Searchable")
-master.config(background="black")
-master.wm_state("zoomed")
+master.geometry("400x380")
 
-text = Text(master)
-text.pack(fill=Y, expand=1)
-
-text.config(
-    borderwidth=0,
-    font="{Helvetica} 20",
-    foreground="white",
-    width="300",
-    background="black",
-    insertbackground="white",  # cursor
-    selectforeground="white",  # selection
-    selectbackground="#008000",
-    wrap=WORD,  # use word wrapping
-    undo=True,  # Tk 8.4
-)
+text = Text(master, width=400, height=380, font=("Andale Mono", 12), highlightthickness=0, bd=2)
 
 ment = StringVar()
 labelText = StringVar()
 
 status = status_bar.StatusBar(master)
 status.pack(side=BOTTOM, fill=X)
-
 text.pack()
 
 
@@ -102,158 +84,165 @@ def delete_all():
 def search_synonyms():
     text.tag_remove("tag", "1.0", END)
 
-    ment = tksd.askstring("Search Synonyms", "Enter your search:", parent=master)
-    print(ment)
-
-    # ment = pop_up.MyDialog.ok()
-    search_word = str(ment)
-
     # get the text from the text editor
     the_text = text.get("1.0", END)
 
-    result_dict = synonym_search.word_to_concepts(the_text, the_text)
-    print(result_dict)
-
-    if search_word not in result_dict:
-        messagebox.showinfo("Synonym", "Search word not found.")
+    if len(the_text) == 1:
+        messagebox.showinfo("Synonym", "No text in the editor.")
         return
     else:
-        word_syns = result_dict[search_word]
+        ment = tksd.askstring("Search Synonyms", "Enter your search:", parent=master)
 
-    for item in word_syns:
-        print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
+        search_word = str(ment)
 
-        if item[2] is None:
-            continue
+        result_dict = synonym_search.word_to_concepts(the_text, the_text)
+        print(result_dict)
+
+        if search_word not in result_dict:
+            messagebox.showinfo("Synonym", "Search word not found.")
+            return
         else:
-            text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
-            text.tag_config("tag", background="yellow", foreground="black")
-    status.set("Synonym search complete for: " + search_word)
+            word_syns = result_dict[search_word]
+
+        for item in word_syns:
+            print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
+
+            if item[2] is None:
+                continue
+            else:
+                text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
+                text.tag_config("tag", background="yellow", foreground="black")
+        status.set("Synonym search complete for: " + search_word)
 
 
 def part_speech():
     text.tag_remove("tag", "1.0", END)
 
-    ment = tksd.askstring("Part of Speech Search", "Enter your grammar search:", parent=master)
-    print("ment: ", ment)
-    part_word = str(ment)
-
-    print('part_word', part_word)
-
     # get the text from the text editor
     the_text = text.get("1.0", END)
 
-    pos_acr_list = part_speech_search.part_of_speech_to_tag(part_word)
-    print("pos_acr_list: ", pos_acr_list)
-    r_dict = part_speech_search.make_dict(the_text, the_text)
-
-    if pos_acr_list is None:
-        print("message box??")
-        messagebox.showinfo("Part of Speech", ment + "not found")
+    if len(the_text) == 1:
+        messagebox.showinfo("Synonym", "No text in the editor.")
         return
+    else:
+        ment = tksd.askstring("Part of Speech Search", "Enter your grammar search:", parent=master)
+        part_word = str(ment)
 
-    for pos_acr in pos_acr_list:
-        if pos_acr in r_dict.keys():
-            word_speech = r_dict[pos_acr]
-            print('word_speech:', word_speech)
+        pos_acr_list = part_speech_search.part_of_speech_to_tag(part_word)
+        r_dict = part_speech_search.make_dict(the_text, the_text)
 
-            for item in word_speech:
-                print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
-                if item[2] is None:
-                    continue
-                else:
-                    text.tag_add("tag", str(item[1]) + "." + str(item[2]),
-                                 str(item[1]) + "." + str(len(item[0]) + item[2]))
-                    text.tag_config("tag", background="orange", foreground="black")
-    status.set("Part of speech search complete for:  " + part_word)
+        print(r_dict)
+
+        if pos_acr_list is None:
+            messagebox.showinfo("Part of Speech", ment + " not found.")
+            return
+
+        for pos_acr in pos_acr_list:
+            if pos_acr in r_dict.keys():
+                word_speech = r_dict[pos_acr]
+
+                for item in word_speech:
+                    print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
+                    if item[2] is None:
+                        continue
+                    else:
+                        text.tag_add("tag", str(item[1]) + "." + str(item[2]),
+                                     str(item[1]) + "." + str(len(item[0]) + item[2]))
+                        text.tag_config("tag", background="orange", foreground="black")
+        status.set("Part of speech search complete for:  " + part_word)
 
 
 def entity():
     text.tag_remove("tag", "1.0", END)
 
-    ment = tksd.askstring("Entity Search", "Enter your type search:", parent=master)
-    print(ment)
-    s_word = str(ment)
-
     the_text = text.get("1.0", END)
 
-    s_dict = entity_analysis.create_dict(s_word, the_text, the_text)
-    print(s_dict)
-
-    if s_word not in s_dict:
-        messagebox.showinfo("Entity Analysis", "Type not found.")
+    if len(the_text) == 1:
+        messagebox.showinfo("Synonym", "No text in the editor.")
         return
     else:
-        word_speech = s_dict[s_word]
+        ment = tksd.askstring("Entity Search", "Enter your type search:", parent=master)
+        s_word = str(ment)
 
-    for item in word_speech:
-        print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
+        s_dict = entity_analysis.create_dict(s_word, the_text, the_text)
+        print(s_dict)
 
-        if item[2] is None:
-            continue
-
+        if s_word not in s_dict:
+            messagebox.showinfo("Entity Analysis", "Type not found.")
+            return
         else:
-            text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
-            text.tag_config("tag", background="green", foreground="black")
+            word_speech = s_dict[s_word]
 
-    status.set("Entity search complete for: " + s_word)
+        for item in word_speech:
+            print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
+
+            if item[2] is None:
+                continue
+
+            else:
+                text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
+                text.tag_config("tag", background="green", foreground="black")
+
+        status.set("Entity search complete for: " + s_word)
 
 
 def levenshtein():
     text.tag_remove("tag", "1.0", END)
 
-    ment = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
-    print(ment)
-    word = str(ment)
-    other_word = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
-
     the_text = text.get("1.0", END)
 
-    l_dict = levenshtein_distance.find_word(word, other_word, the_text, the_text)
-
-    lev_distance = levenshtein_distance.minimumEditDistance(word, other_word, the_text)[2]
-
-    if word not in the_text and other_word not in the_text:
-        messagebox.showinfo("Levenshtein", "Word not in text.")
-        return
+    if len(the_text) == 1:
+        messagebox.showinfo("Synonym", "No text in the editor.")
     else:
-        messagebox.showinfo("Levenshtein distance", lev_distance)
+        ment = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
+        word = str(ment)
+        other_word = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
 
-    word_list = l_dict[word]
+        l_dict = levenshtein_distance.find_word(word, other_word, the_text, the_text)
 
-    for item in word_list:
-        print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
+        print(l_dict)
+        lev_distance = levenshtein_distance.minimumEditDistance(word, other_word, the_text)[2]
 
-        if item[2] is None:
-            continue
-
+        if word not in the_text and other_word not in the_text:
+            messagebox.showinfo("Levenshtein", "Word not in text.")
+            return
         else:
-            text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
-            text.tag_config("tag", background="green", foreground="black")
+            messagebox.showinfo("Levenshtein distance", lev_distance)
 
-    status.set("Levenshtein distance for : " + word + " " + other_word)
+        word_list = l_dict[word]
+
+        for item in word_list:
+            print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
+            if item[2] is None:
+                continue
+
+            else:
+                text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
+                text.tag_config("tag", background="green", foreground="black")
+
+        status.set("Levenshtein distance for : " + word + " " + other_word)
 
 
 def editDistanceForSentence():
     text.tag_remove("tag", "1.0", END)
-
-    sentence_one = tksd.askstring("Edit Distance for Sentence", "Enter your levenshtein distance search:",
-                                  parent=master)
-    # print(ment)
-    # sentence_one = str(ment)
-    sentence_two = tksd.askstring("Edit Distance for Sentence", "Enter your levenshtein distance search:",
-                                  parent=master)
-
-    distance_value = EditDistanceForSentences.LDforSentences(sentence_one, sentence_two)
-
     the_text = text.get("1.0", END)
 
-    if sentence_one in the_text and sentence_two in the_text:
-        messagebox.showinfo("Edit Distance for Sentence", distance_value)
+    if len(the_text) == 1:
+        messagebox.showinfo("Synonym", "No text in the editor.")
+        return
     else:
-        messagebox.showinfo("Edit Distance for Sentence", "Sentence not in text.")
+        sentence_one = tksd.askstring("Edit Distance for Sentence", "Enter your levenshtein distance search:",parent=master)
 
-    status.set("Edit Distance for Sentence: " + sentence_one + " " + sentence_two)
+        sentence_two = tksd.askstring("Edit Distance for Sentence", "Enter your levenshtein distance search:",parent=master)
+
+        distance_value = EditDistanceForSentences.LDforSentences(sentence_one, sentence_two)
+
+        if sentence_one in the_text and sentence_two in the_text:
+            messagebox.showinfo("Edit Distance for Sentence", distance_value)
+        else:
+            messagebox.showinfo("Edit Distance for Sentence", "Sentence not in text.")
+
+        status.set("Edit Distance for Sentence: " + sentence_one + " " + sentence_two)
 
 
 # File Menu
