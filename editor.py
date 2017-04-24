@@ -7,6 +7,7 @@ from tkinter import messagebox
 
 import tkinter.simpledialog as tksd
 
+import levenshtein_distance
 import status_bar
 import synonym_search
 import part_speech_search
@@ -47,8 +48,6 @@ status = status_bar.StatusBar(master)
 status.pack(side=BOTTOM, fill=X)
 
 text.pack()
-
-
 
 
 # Methods
@@ -109,9 +108,7 @@ def tool_bar():
     return search_pop.SampleApp.on_button(app)
 
 
-
 def search_synonyms():
-
     text.tag_remove("tag", "1.0", END)
 
     ment = tksd.askstring("Dialog (String)", "Enter your search:", parent=master)
@@ -124,7 +121,7 @@ def search_synonyms():
 
     result_dict = synonym_search.word_to_concepts(the_text, the_text)
     print(result_dict)
-    
+
     if search_word not in result_dict:
         messagebox.showinfo("Synonym", "Search word not found.")
         return
@@ -132,41 +129,38 @@ def search_synonyms():
         word_syns = result_dict[search_word]
 
     for item in word_syns:
-        print("word: " + str(item[0]) + " line: " + str(item[1]) +" , " + " column: " + str(item[2]))
+        print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
 
         if item[2] is None:
             continue
         else:
             text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
             text.tag_config("tag", background="yellow", foreground="black")
-        #status.set("Synonym search complete: " + "word: " + str(item[0]) + " line: " + str(item[1]) +" , " + " column: " + str(item[2]))
+            # status.set("Synonym search complete: " + "word: " + str(item[0]) + " line: " + str(item[1]) +" , " + " column: " + str(item[2]))
     status.set("Synonym search complete for: " + search_word)
 
     # labelText= str("Synonym search complete")
     # print(labelText)
     # status = Label(master, text=labelText, bd=1, relief=SUNKEN, anchor=W)
     # status.pack()
-    #master.update_idletasks()
+    # master.update_idletasks()
     # status.update_idletasks()
 
 
-
-
-
 def part_speach():
-    #status.set("")
+    # status.set("")
     text.tag_remove("tag", "1.0", END)
 
     ment = tksd.askstring("Dialog (String)", "Enter your grammar search:", parent=master)
     print(ment)
     part_word = str(ment)
-    
+
     # get the text from the text editor
     the_text = text.get("1.0", END)
-    
+
     r_dict = part_speech_search.make_dict(part_word, the_text, the_text)
     print(r_dict)
-    
+
     if part_word not in r_dict:
         messagebox.showinfo("Part of Speech", "Part of speech word not found.")
         return
@@ -183,6 +177,8 @@ def part_speach():
             text.tag_config("tag", background="orange", foreground="black")
 
     status.set("Part of speech search complete for:  " + part_word)
+
+
 # print(the_text)
 
 
@@ -192,12 +188,12 @@ def entity():
     ment = tksd.askstring("Dialog (String)", "Enter your type search:", parent=master)
     print(ment)
     s_word = str(ment)
-    
+
     the_text = text.get("1.0", END)
-    
-    s_dict = entity_analysis.create_dict(s_word,the_text,the_text )
+
+    s_dict = entity_analysis.create_dict(s_word, the_text, the_text)
     print(s_dict)
-    
+
     if s_word not in s_dict:
         messagebox.showinfo("Entity Analysis", "Type not found.")
         return
@@ -218,7 +214,39 @@ def entity():
 
 
 def levenshtein():
-    pass
+    text.tag_remove("tag", "1.0", END)
+
+
+    ment = tksd.askstring("Dialog (String)", "Enter your levenshtein distance search:", parent=master)
+    print(ment)
+    word = str(ment)
+    other_word = tksd.askstring("Dialog (String)", "Enter your levenshtein distance search:", parent=master)
+
+    the_text = text.get("1.0", END)
+
+    l_dict = levenshtein_distance.find_word(word, other_word, the_text, the_text)
+
+    lev_distance = levenshtein_distance.minimumEditDistance(word, other_word, the_text)[2]
+
+    if word not in the_text and other_word not in the_text:
+        messagebox.showinfo("Levenshtein", "Word not in text.")
+        return
+    else:
+        messagebox.showinfo("Levenshtein distance", lev_distance)
+
+    word_list = l_dict[word]
+
+    for item in word_list:
+        print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
+
+        if item[2] is None:
+            continue
+
+        else:
+            text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
+            text.tag_config("tag", background="green", foreground="black")
+
+    status.set("Levenshtein distance for : " + word + " " + other_word)
 
 
 # File Menu
@@ -252,8 +280,7 @@ edit_menu.add_command(label="Select All", command=select_all)
 search_menu = Menu(menu)
 menu.add_cascade(label="Search", menu=search_menu)
 search_menu.add_command(label="Synonyms", command=search_synonyms)
-search_menu.add_command(label="Entity Analysis", command = entity)
-
+search_menu.add_command(label="Entity Analysis", command=entity)
 
 # mEntry = Entry(search_menu, textvariable=ment).pack()
 grammar_menu = Menu(menu)
