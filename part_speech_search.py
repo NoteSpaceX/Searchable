@@ -11,6 +11,7 @@ class Categorize:
         # sentences = nltk.sent_tokenize(self)
         tokens = nltk.word_tokenize(self)
         tagged = nltk.pos_tag(tokens)
+        #print('tagged' + tagged)
         
         for item in tagged:
             key = item[1]
@@ -26,10 +27,18 @@ class Categorize:
             result += item + " "
         return result
 
+def part_of_speech_to_tag(part_of_speech):
+    tag = {'conjunction': ['CC'], 'number': ['CD'], 'determiner': ['DT'], 'preposition': ['IN'],
+           'adjective': ['JJ', 'JJR', 'JJS'], 'noun': ['NN', 'NNS', 'NNP', 'NNPS'], 'pronoun': ['PRP', 'PRP$'],
+           'adverb': ['RB', 'RBR', 'RBS'], 'verb': ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']}
+    part_of_speech_acr = tag.get(part_of_speech)
+    if part_of_speech_acr is not None:
+        return part_of_speech_acr
 
-def make_dict(word, body, text):
+def make_dict(body, text):
     # take the categorize dictionary
     categorize_dict = Categorize.text_dictionary(text)
+    print('categorize_dict:', categorize_dict)
     
     # make the new dictionary that we will return
     new_dict = {}

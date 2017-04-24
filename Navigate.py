@@ -28,13 +28,14 @@ class Navigate:
         # for line in text:
         #     if word in line
 
-    @staticmethod
-    def get_column_number(filename):
-        with open(filename) as file:
-            reader = csv.reader(file, delimiter=' ', skipinitialspace=True)
-            first_row = next(reader)
-            num_cols = len(first_row)
-            print(num_cols)
+    # # Not used
+    # @staticmethod
+    # def get_column_number(filename):
+    #     with open(filename) as file:
+    #         reader = csv.reader(file, delimiter=' ', skipinitialspace=True)
+    #         first_row = next(reader)
+    #         num_cols = len(first_row)
+    #         print(num_cols)
 
     @staticmethod
     def get_specific_column_number(word, text):
@@ -54,6 +55,7 @@ class Navigate:
 
         for line_list in text:
             line_list = text.split("\n")
+        print('line_list: ', line_list)
 
         for i in range(0, len(line_list)):
             item = line_list[i].split(" ")
@@ -61,6 +63,7 @@ class Navigate:
 
             for k in range(0, len(item)):
                 if item[k] == word:
+                    print('j ', j)
                     return j
                 j += len(item[k]) + 1
 
