@@ -5,36 +5,31 @@ from EditorUtils import Navigate
 
 #Todo: 'NoneType' object is not iterable
 
-def minimumEditDistance(s1,s2, the_text):
+def minimum_edit_distance(s1, s2, the_text):
     # if the words in the text
     if s1 in the_text and s2 in the_text:
         if len(s1) > len(s2):
             s1,s2 = s2,s1
         distances = range(len(s1) + 1)
         for index2,char2 in enumerate(s2):
-            newDistances = [index2+1]
+            new_distances = [index2+1]
             for index1,char1 in enumerate(s1):
                 if char1 == char2:
-                    newDistances.append(distances[index1])
+                    new_distances.append(distances[index1])
                 else:
-                    newDistances.append(1 + min((distances[index1],
+                    new_distances.append(1 + min((distances[index1],
                                                  distances[index1+1],
-                                                 newDistances[-1])))
-            distances = newDistances
+                                                 new_distances[-1])))
+            distances = new_distances
         result = distances[-1]
-        sublist = []
-        sublist.append(s1)
-        sublist.append(s2)
-        sublist.append(result)
+        sublist = [s1, s2, result]
         return sublist
-
-
 
 dict = {}
 
 
 def find_word(word, other_word, body, the_text):
-    lev_list = minimumEditDistance(word,other_word, body)
+    lev_list = minimum_edit_distance(word, other_word, body)
 
 
     # iterate through the list of synonyms
@@ -58,6 +53,6 @@ def find_word(word, other_word, body, the_text):
 
     return dict
 
-print(minimumEditDistance("kitten","sitting","hey kitten sitting"))
+print(minimum_edit_distance("kitten", "sitting", "hey kitten sitting"))
 print(find_word("kitten","sitting","hey kitten sitting","hey kitten sitting"))
 # print(minimumEditDistance("Sunday", "Saturday"))

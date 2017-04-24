@@ -4,7 +4,6 @@ from tkinter import filedialog
 from tkinter import messagebox
 
 from EditorUtils import Status_Bar
-from Resources import levenshtein_distance, part_speech_search
 from SearchFeatures import Edit_Distance_For_Sentences, Entity_Analysis, Synonym_Search, Part_Speech_Search, \
     Levenshtein_Distance
 
@@ -116,7 +115,6 @@ def search_synonyms():
 def part_speech():
     text.tag_remove("tag", "1.0", END)
 
-
     # get the text from the text editor
     the_text = text.get("1.0", END)
 
@@ -201,7 +199,7 @@ def levenshtein():
         l_dict = Levenshtein_Distance.find_word(word, other_word, the_text, the_text)
 
         print(l_dict)
-        lev_distance = Levenshtein_Distance.minimumEditDistance(word, other_word, the_text)[2]
+        lev_distance = Levenshtein_Distance.minimum_edit_distance(word, other_word, the_text)[2]
 
         if word not in the_text and other_word not in the_text:
             messagebox.showinfo("Levenshtein", "Word not in text.")
@@ -223,7 +221,7 @@ def levenshtein():
         status.set("Levenshtein distance for : " + word + " " + other_word)
 
 
-def editDistanceForSentence():
+def edit_distance_for_sentence():
     text.tag_remove("tag", "1.0", END)
     the_text = text.get("1.0", END)
 
@@ -286,7 +284,7 @@ grammar_menu.add_cascade(label="Part of Speech", command=part_speech)
 extra_menu = Menu(menu)
 menu.add_cascade(label="Extra", menu=extra_menu)
 extra_menu.add_cascade(label="Levenshtein", command=levenshtein)
-extra_menu.add_cascade(label="Edit Distance for Sentences", command=editDistanceForSentence)
+extra_menu.add_cascade(label="Edit Distance for Sentences", command=edit_distance_for_sentence)
 
 text.focus_set()
 
