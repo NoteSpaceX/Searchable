@@ -1,5 +1,5 @@
 import Navigate
-
+import numbers
 
 def minimumEditDistance(s1,s2, the_text):
     # if the words in the text
@@ -37,7 +37,7 @@ def find_word(word, other_word, body, the_text):
     for item in lev_list:
         sublist = []
 
-        if item.isdigit():
+        if isinstance(item,numbers.Number):
             continue
 
         # make a list and add item, page number, column number to it
@@ -51,6 +51,7 @@ def find_word(word, other_word, body, the_text):
             dict[word] = [item_tuple]
         elif word in dict and item in body and item_tuple not in dict[word]:
             dict[word].append(item_tuple)
+
     return dict
 
 print(minimumEditDistance("kitten","sitting","hey kitten sitting"))
