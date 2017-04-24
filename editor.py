@@ -11,49 +11,42 @@ import levenshtein_distance
 import status_bar
 import synonym_search
 import part_speech_search
+import entity_analysis
 import part_of_speech_to_tag
-# import search_pop
-# import take_input
-#
-# from take_input import takeInput
-#
+
 # TODO: if user types in nothing in the editor
-# TODO: make a method that transforms grammar acronym to words
-# TODO: High light the word search taht you enter for synonyms in a different color
 # TODO: highlight repeated words (make sure)
 # TODO: error for invalid searches
-# TODO: give appriate names(entity analysis)
-# TODO: status bar
 
 # set up the frame
-import entity_analysis
-
 master = Tk()
-master.configure(background="black")
-# set the title of the frame
-# master['bg'] = "black"
-# master.configure(background="black")
 master.title("Searchable")
-# set the size of the file
-master.geometry("400x380")
+master.config(background="black")
+master.wm_state("zoomed")
 
+text = Text(master)
+text.pack(fill=Y, expand=1)
+
+text.config(
+    borderwidth=0,
+    font="{Helvetica} 20",
+    foreground="white",
+    width="300",
+    background="black",
+    insertbackground="white", # cursor
+    selectforeground="white", # selection
+    selectbackground="#008000",
+    wrap=WORD, # use word wrapping
+    undo=True, # Tk 8.4
+    )
 
 ment = StringVar()
 labelText = StringVar()
-# labelText = ""
-# create text object
-text = Text(master, width=400, height=380, font=("Andale Mono", 12), highlightthickness=0, bd=2)
 
-# mEntry = Entry(master, textvariable=ment).pack()
-# mbutton = Button(master, text="Search", command=search_synonyms, fg="red", bg="blue").pack()
-# # status bar
-# status = Label(master, text=labelText, bd=1, relief=SUNKEN, anchor=W)
-# status.pack(side=BOTTOM, fill=X)
 status = status_bar.StatusBar(master)
 status.pack(side=BOTTOM, fill=X)
 
 text.pack()
-
 
 # Methods
 def new():
@@ -109,8 +102,10 @@ def delete_all():
 
 def search_synonyms():
     text.tag_remove("tag", "1.0", END)
+    
+    ment = tksd.askstring("Search Synonyms", "Enter your search:", parent=master)
+    print(ment)
 
-    ment = tksd.askstring("Dialog (String)", "Enter your search:", parent=master)
     # ment = pop_up.MyDialog.ok()
     search_word = str(ment)
 
@@ -134,28 +129,18 @@ def search_synonyms():
         else:
             text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
             text.tag_config("tag", background="yellow", foreground="black")
-            # status.set("Synonym search complete: " + "word: " + str(item[0]) + " line: " + str(item[1]) +" , " + " column: " + str(item[2]))
     status.set("Synonym search complete for: " + search_word)
-
-    # labelText= str("Synonym search complete")
-    # print(labelText)
-    # status = Label(master, text=labelText, bd=1, relief=SUNKEN, anchor=W)
-    # status.pack()
-    # master.update_idletasks()
-    # status.update_idletasks()
-
-
+    
+    
 def part_speech():
+
     text.tag_remove("tag", "1.0", END)
 
-    ment = tksd.askstring("Dialog (String)", "Enter your grammar search:", parent=master)
+    ment = tksd.askstring("Part of Speech Search", "Enter your grammar search:", parent=master)
     print("ment: ", ment)
     part_word = str(ment)
-
-
+    
     print('part_word', part_word)
-  
-  
     
     # get the text from the text editor
     the_text = text.get("1.0", END)
@@ -192,13 +177,10 @@ def part_speech():
       status.set("Part of speech search complete for:  " + part_word)
 
 
-# print(the_text)
-
-
 def entity():
     text.tag_remove("tag", "1.0", END)
 
-    ment = tksd.askstring("Dialog (String)", "Enter your type search:", parent=master)
+    ment = tksd.askstring("Entity Search", "Enter your type search:", parent=master)
     print(ment)
     s_word = str(ment)
 
@@ -230,7 +212,7 @@ def levenshtein():
     text.tag_remove("tag", "1.0", END)
 
 
-    ment = tksd.askstring("Dialog (String)", "Enter your levenshtein distance search:", parent=master)
+    ment = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
     print(ment)
     word = str(ment)
     other_word = tksd.askstring("Dialog (String)", "Enter your levenshtein distance search:", parent=master)
@@ -304,8 +286,7 @@ extra_menu = Menu(menu)
 menu.add_cascade(label="Extra", menu=extra_menu)
 extra_menu.add_cascade(label="Levenshtein", command=levenshtein)
 
-# B1 = tkinter.Button(master, text="Search", command=search_synonyms)
-# B1.pack()
+text.focus_set()
 
 
 master.mainloop()
