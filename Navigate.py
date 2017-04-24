@@ -13,7 +13,6 @@ class Navigate:
     def get_specific_column_number(word, text):
         for line_list in text:
             line_list = text.split("\n")
-        print('line_list: ', line_list)
 
         for i in range(0, len(line_list)):
             item = line_list[i].split(" ")
@@ -21,6 +20,5 @@ class Navigate:
 
             for k in range(0, len(item)):
                 if item[k] == word:
-                    print('j ', j)
                     return j
                 j += len(item[k]) + 1

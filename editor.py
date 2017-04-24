@@ -13,6 +13,7 @@ import entity_analysis
 # TODO: if user types in nothing in the editor
 # TODO: highlight repeated words (make sure)
 # TODO: error for invalid searches
+# TODO: Ignroe punctuation
 
 # set up the frame
 master = Tk()
