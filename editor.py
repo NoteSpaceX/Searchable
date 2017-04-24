@@ -8,6 +8,7 @@ import levenshtein_distance
 import status_bar
 import synonym_search
 import part_speech_search
+import entity_analysis
 
 # TODO: if user types in nothing in the editor
 # TODO: highlight repeated words (make sure)
@@ -35,13 +36,13 @@ text.config(
     undo=True, # Tk 8.4
     )
 
-ment = StringVar()
 labelText = StringVar()
 
 status = status_bar.StatusBar(master)
 status.pack(side=BOTTOM, fill=X)
 
 text.pack()
+
 
 # Methods
 def new():
@@ -94,6 +95,7 @@ def select_all():
 
 def delete_all():
     text.delete(1.0, END)
+
 
 def search_synonyms():
     text.tag_remove("tag", "1.0", END)
@@ -196,7 +198,6 @@ def entity():
 
 def levenshtein():
     text.tag_remove("tag", "1.0", END)
-
 
     ment = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
     print(ment)

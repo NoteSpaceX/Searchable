@@ -1,5 +1,4 @@
 import nltk
-from nltk.compat import raw_input
 
 import Navigate
 
@@ -27,6 +26,7 @@ class Categorize:
             result += item + " "
         return result
 
+
 def part_of_speech_to_tag(part_of_speech):
     tag = {'conjunction': ['CC'], 'number': ['CD'], 'determiner': ['DT'], 'preposition': ['IN'],
            'adjective': ['JJ', 'JJR', 'JJS'], 'noun': ['NN', 'NNS', 'NNP', 'NNPS'], 'pronoun': ['PRP', 'PRP$'],
@@ -34,6 +34,7 @@ def part_of_speech_to_tag(part_of_speech):
     part_of_speech_acr = tag.get(part_of_speech)
     if part_of_speech_acr is not None:
         return part_of_speech_acr
+
 
 def make_dict(body, text):
     # take the categorize dictionary
@@ -45,8 +46,7 @@ def make_dict(body, text):
     
     # iterate through the current dictionary
     for key, value in categorize_dict.items():
-        
-        
+
         # iterate through the values because the dictionary contains a list of values as value
         for item in value:
             sublist = []

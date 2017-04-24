@@ -2,7 +2,6 @@ import Navigate
 import credentials
 import requests
 import urllib
-from watson_developer_cloud import NaturalLanguageClassifierV1
 
 # TODO: if word is not in the text
 # TODO: if word is two words
@@ -17,12 +16,6 @@ class GetData:
         text_to_url = urllib.parse.quote(text_str)
         response = requests.get(base_url + text_to_url + end_url, auth=(credentials.username, credentials.password))
         print(response)
-        # natural_language_classifier = NaturalLanguageClassifierV1(
-        #     username=credentials.username,
-        #     password=credentials.password)
-        #
-        # classes = natural_language_classifier.classify('10D41B-nlc-1', 'How hot will it be today?')
-        # print(json.dumps(classes, indent=2))
 
     @staticmethod
     def get_sentiment(text_str):
