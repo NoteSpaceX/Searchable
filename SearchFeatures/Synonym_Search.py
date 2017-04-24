@@ -1,6 +1,6 @@
 from nltk.corpus import wordnet as wn
 
-import Navigate
+from EditorUtils import Navigate
 
 
 def synonyms(word):

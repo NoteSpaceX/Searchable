@@ -1,11 +1,9 @@
-import Navigate
-import credentials
-import requests
 import urllib
 
-# TODO: if word is not in the text
-# TODO: if word is two words
-import synonym_search
+import requests
+
+from EditorUtils import Navigate
+from SearchFeatures import Synonym_Search, credentials
 
 
 class GetData:
@@ -62,7 +60,7 @@ class GetData:
                     # entity_text = str.lower(entity['text'])
                     if entity_type == lower_search_word and entity['text'] not in word_types:
                         word_types.append(entity['text'])
-                        synonyms = synonym_search.synonyms(entity_type)
+                        synonyms = Synonym_Search.synonyms(entity_type)
                         print('synonyms: ', synonyms)
                         for synonym in synonyms:
                             lower_synonym = str.lower(synonym)
