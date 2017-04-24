@@ -28,10 +28,14 @@ import part_speech_search
 import entity_analysis
 
 master = Tk()
+master.configure(background="black")
 # set the title of the frame
+# master['bg'] = "black"
+# master.configure(background="black")
 master.title("Searchable")
 # set the size of the file
 master.geometry("400x380")
+
 
 ment = StringVar()
 labelText = StringVar()
@@ -101,12 +105,6 @@ def select_all():
 
 def delete_all():
     text.delete(1.0, END)
-
-
-def tool_bar():
-    app = search_pop.SampleApp()
-    return search_pop.SampleApp.on_button(app)
-
 
 def search_synonyms():
     text.tag_remove("tag", "1.0", END)
