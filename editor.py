@@ -37,7 +37,6 @@ text.config(
     undo=True,  # Tk 8.4
 )
 
-ment = StringVar()
 labelText = StringVar()
 
 status = status_bar.StatusBar(master)
