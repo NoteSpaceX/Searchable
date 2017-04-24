@@ -37,6 +37,8 @@ def find_word(word, other_word, body, the_text):
     for item in lev_list:
         sublist = []
 
+        if item.isdigit():
+            continue
 
         # make a list and add item, page number, column number to it
         sublist.append(item)
