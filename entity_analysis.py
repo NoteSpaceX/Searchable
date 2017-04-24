@@ -2,7 +2,6 @@ import Navigate
 import credentials
 import requests
 import urllib
-from watson_developer_cloud import NaturalLanguageClassifierV1
 
 # TODO: if word is not in the text
 # TODO: if word is two words
@@ -17,12 +16,6 @@ class GetData:
         text_to_url = urllib.parse.quote(text_str)
         response = requests.get(base_url + text_to_url + end_url, auth=(credentials.username, credentials.password))
         print(response)
-        # natural_language_classifier = NaturalLanguageClassifierV1(
-        #     username=credentials.username,
-        #     password=credentials.password)
-        #
-        # classes = natural_language_classifier.classify('10D41B-nlc-1', 'How hot will it be today?')
-        # print(json.dumps(classes, indent=2))
 
     @staticmethod
     def get_sentiment(text_str):
@@ -52,7 +45,6 @@ class GetData:
 
     @staticmethod
     def find_type(text_str, search_word):
-        #search_word = 'Person'
         lower_search_word = str.lower(search_word)
         base_url = 'https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2017-02-27&text='
         end_url = '.&features=sentiment,relations'
@@ -70,20 +62,13 @@ class GetData:
                     # entity_text = str.lower(entity['text'])
                     if entity_type == lower_search_word and entity['text'] not in word_types:
                         word_types.append(entity['text'])
-                        #TODO: NLTK CODE - TO GET SYNONYMS
                         synonyms = synonym_search.synonyms(entity_type)
                         print('synonyms: ', synonyms)
-                        # TODO: Remove below temp code
-                        # synonyms = find_word(word, body, the_text)
-                        # synonyms = ['customer', 'body', 'character', 'guy', 'human', 'man', 'woman', 'being', 'somebody', 'individual']
                         for synonym in synonyms:
                             lower_synonym = str.lower(synonym)
                             lower_text_str = str.lower(text_str)
                             if lower_synonym in lower_text_str and lower_synonym not in word_types:
                                 word_types.append(synonym)
-                    # if entity_text == lower_search_word and entity_type not in word_types:
-                    #     print('hello')
-                    #     word_types.append(entity_type)
         print('word types:', word_types)
         return word_types
 

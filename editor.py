@@ -12,6 +12,8 @@ import part_speech_search
 import entity_analysis
 
 # TODO: highlight repeated words (make sure)
+# TODO: Ignroe punctuation
+
 
 # set up the frame
 master = Tk()
@@ -20,7 +22,6 @@ master.geometry("400x380")
 
 text = Text(master, width=400, height=380, font=("Andale Mono", 12), highlightthickness=0, bd=2)
 
-ment = StringVar()
 labelText = StringVar()
 
 status = status_bar.StatusBar(master)
@@ -89,11 +90,11 @@ def search_synonyms():
 
     if len(the_text) == 1:
         messagebox.showinfo("Synonym", "No text in the editor.")
-        return
+
     else:
         ment = tksd.askstring("Search Synonyms", "Enter your search:", parent=master)
 
-        search_word = str(ment)
+        search_word = str(ment).lower()
 
         result_dict = synonym_search.word_to_concepts(the_text, the_text)
         print(result_dict)
@@ -118,6 +119,7 @@ def search_synonyms():
 def part_speech():
     text.tag_remove("tag", "1.0", END)
 
+
     # get the text from the text editor
     the_text = text.get("1.0", END)
 
@@ -126,7 +128,7 @@ def part_speech():
         return
     else:
         ment = tksd.askstring("Part of Speech Search", "Enter your grammar search:", parent=master)
-        part_word = str(ment)
+        part_word = str(ment).lower()
 
         pos_acr_list = part_speech_search.part_of_speech_to_tag(part_word)
         r_dict = part_speech_search.make_dict(the_text, the_text)
@@ -162,7 +164,7 @@ def entity():
         return
     else:
         ment = tksd.askstring("Entity Search", "Enter your type search:", parent=master)
-        s_word = str(ment)
+        s_word = str(ment).lower()
 
         s_dict = entity_analysis.create_dict(s_word, the_text, the_text)
         print(s_dict)
@@ -193,9 +195,10 @@ def levenshtein():
 
     if len(the_text) == 1:
         messagebox.showinfo("Synonym", "No text in the editor.")
+        return
     else:
         ment = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
-        word = str(ment)
+        word = str(ment).lower()
         other_word = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
 
         l_dict = levenshtein_distance.find_word(word, other_word, the_text, the_text)

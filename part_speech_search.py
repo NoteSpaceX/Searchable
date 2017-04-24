@@ -1,5 +1,4 @@
 import nltk
-from nltk.compat import raw_input
 
 import Navigate
 
@@ -8,10 +7,8 @@ class Categorize:
     # stores each word in a line in a list
     def text_dictionary(self):
         dict = {}
-        # sentences = nltk.sent_tokenize(self)
         tokens = nltk.word_tokenize(self)
         tagged = nltk.pos_tag(tokens)
-        #print('tagged' + tagged)
         
         for item in tagged:
             key = item[1]
@@ -27,6 +24,7 @@ class Categorize:
             result += item + " "
         return result
 
+
 def part_of_speech_to_tag(part_of_speech):
     tag = {'conjunction': ['CC'], 'number': ['CD'], 'determiner': ['DT'], 'preposition': ['IN'],
            'adjective': ['JJ', 'JJR', 'JJS'], 'noun': ['NN', 'NNS', 'NNP', 'NNPS'], 'pronoun': ['PRP', 'PRP$'],
@@ -35,26 +33,22 @@ def part_of_speech_to_tag(part_of_speech):
     if part_of_speech_acr is not None:
         return part_of_speech_acr
 
+
 def make_dict(body, text):
     # take the categorize dictionary
     categorize_dict = Categorize.text_dictionary(text)
-    print('categorize_dict:', categorize_dict)
     
     # make the new dictionary that we will return
     new_dict = {}
     
     # iterate through the current dictionary
     for key, value in categorize_dict.items():
-        
-        
+
         # iterate through the values because the dictionary contains a list of values as value
         for item in value:
-            sublist = []
-            
-            sublist.append(item)
-            sublist.append(Navigate.Navigate.get_line(item, text))
-            sublist.append(Navigate.Navigate.get_specific_column_number(item, text))
-            
+            sublist = [item, Navigate.Navigate.get_line(item, text),
+                       Navigate.Navigate.get_specific_column_number(item, text)]
+
             item_tuple = tuple(sublist)
             
             if key not in new_dict and item_tuple[0] in body:
