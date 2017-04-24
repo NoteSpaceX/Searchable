@@ -1,6 +1,8 @@
 import Navigate
 import numbers
 
+#Todo: 'NoneType' object is not iterable
+
 def minimumEditDistance(s1,s2, the_text):
     # if the words in the text
     if s1 in the_text and s2 in the_text:
