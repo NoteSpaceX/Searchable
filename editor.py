@@ -165,6 +165,7 @@ def part_speech():
                     text.tag_add("tag", str(item[1]) + "." + str(item[2]),
                                  str(item[1]) + "." + str(len(item[0]) + item[2]))
                     text.tag_config("tag", background="orange", foreground="black")
+
     status.set("Part of speech search complete for:  " + part_word)
 
 
