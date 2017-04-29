@@ -98,20 +98,21 @@ def create_dict(word,body, text):
         sublist = []
 
         # make sure not getting the same word
-        if not item == word:
-            # make a list and add item, page number, column number to it
-            sublist.append(item)
-            print('line#', Navigate.Navigate.get_line(item, text))
-            sublist.append(Navigate.Navigate.get_line(item, text))
-            print('column#', Navigate.Navigate.get_specific_column_number(item, text))
-            sublist.append(Navigate.Navigate.get_specific_column_number(item, text))
+        # if not item == word:
 
-            # turn the list into tuple
-            item_tuple = tuple(sublist)
-            if item in body and word not in dict:
-                dict[word] = [item_tuple]
-            elif word in dict and item in body and item_tuple not in dict[word]:
-                dict[word].append(item_tuple)
+        # make a list and add item, page number, column number to it
+        sublist.append(item)
+        print('line#', Navigate.Navigate.get_line(item, text))
+        sublist.append(Navigate.Navigate.get_line(item, text))
+        print('column#', Navigate.Navigate.get_specific_column_number(item, text))
+        sublist.append(Navigate.Navigate.get_specific_column_number(item, text))
+
+        # turn the list into tuple
+        item_tuple = tuple(sublist)
+        if item in body and word not in dict:
+            dict[word] = [item_tuple]
+        elif word in dict and item in body and item_tuple not in dict[word]:
+            dict[word].append(item_tuple)
         print(dict)
     return dict
 
