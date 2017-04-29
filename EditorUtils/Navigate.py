@@ -11,14 +11,31 @@ class Navigate:
 
     @staticmethod
     def get_specific_column_number(word, text):
-        for line_list in text:
-            line_list = text.split("\n")
+        # for line_list in text:
+        #     line_list = text.split("\n")
+        line_list = text.split("\n")
 
         for i in range(0, len(line_list)):
             item = line_list[i].split(" ")
             j = 0
 
             for k in range(0, len(item)):
-                if item[k] == word:
-                    return j
-                j += len(item[k]) + 1
+                print('-', word)
+                if " " not in word:
+                    print('word1', word)
+                    print('item1', item[k])
+                    if item[k] == word:
+                        return j
+                    j += len(item[k]) + 1
+                # for search phrase with more than one word
+                else:
+                    word_list = word.split(" ")
+                    for num in range(0, len(word_list)):
+                        if k + num < len(item) - 1:
+                            if word_list[num] == item[k + num]:
+                                return j
+                    j += len(item[k]) + 1
+                    # for m in range(0, len(word)):
+                    #     if k+m < len(item)-1:
+                    #         if item[k+m] != word[k+m]:
+                    #             j += len(item[k]) + 1
