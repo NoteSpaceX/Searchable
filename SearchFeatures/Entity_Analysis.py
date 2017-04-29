@@ -31,15 +31,18 @@ class GetData:
         text_to_url = urllib.parse.quote(text_str)
         response = requests.get(base_url + text_to_url + end_url, auth=(credentials.username, credentials.password))
         result = response.json()
+
         # print(result)
         # print(result['emotion']['document']['emotion'])
+
         emotions = result['emotion']['document']['emotion']
-        print(emotions)
-        emotion_result = []
-        for emotion in emotions:
-            if emotions[emotion] > 0.2:
-                emotion_result.append(emotion)
-        return emotion_result
+        return emotions
+        # print(emotions)
+        # emotion_result = []
+        # for emotion in emotions:
+        #     if emotions[emotion] > 0.2:
+        #         emotion_result.append(emotion)
+        # return emotion_result
 
     @staticmethod
     def find_type(text_str, search_word):

@@ -243,6 +243,25 @@ def edit_distance_for_sentence():
         status.set("Edit Distance for Sentence: " + sentence_one + " " + sentence_two)
 
 
+def get_sentiment():
+    text.tag_remove("tag", "1.0", END)
+    the_text = text.get("1.0", END)
+
+    sentiment = Entity_Analysis.GetData.get_sentiment(the_text)
+    messagebox.showinfo("Text Sentiment:", "sentiment: " + sentiment[3] + "\nscore: " + str(sentiment[1]))
+
+
+def get_emotion():
+    text.tag_remove("tag", "1.0", END)
+    the_text = text.get("1.0", END)
+
+    emotions = Entity_Analysis.GetData.get_emotion(the_text)
+    result = ""
+    for emotion in emotions.keys():
+        result += emotion + ": " + str(emotions[emotion]) + "\n"
+    messagebox.showinfo("Text Emotion:", result)
+
+
 # File Menu
 menu = Menu(master)
 # set menu and makes main menu
@@ -285,6 +304,11 @@ extra_menu = Menu(menu)
 menu.add_cascade(label="Extra", menu=extra_menu)
 extra_menu.add_cascade(label="Levenshtein", command=levenshtein)
 extra_menu.add_cascade(label="Edit Distance for Sentences", command=edit_distance_for_sentence)
+
+text_analysis_menu = Menu(menu)
+menu.add_cascade(label="Analyze", menu=text_analysis_menu)
+text_analysis_menu.add_command(label="Sentiment", command=get_sentiment)
+text_analysis_menu.add_command(label="Emotion", command=get_emotion)
 
 text.focus_set()
 
