@@ -179,8 +179,8 @@ def entity():
             else:
                 text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
                 text.tag_config("tag", background="green", foreground="black")
-
         status.set("Entity search complete for: " + s_word)
+        s_dict.clear()
 
 
 def levenshtein():
