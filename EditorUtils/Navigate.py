@@ -20,10 +20,7 @@ class Navigate:
             j = 0
 
             for k in range(0, len(item)):
-                print('-', word)
                 if " " not in word:
-                    print('word1', word)
-                    print('item1', item[k])
                     if item[k] == word:
                         return j
                     j += len(item[k]) + 1

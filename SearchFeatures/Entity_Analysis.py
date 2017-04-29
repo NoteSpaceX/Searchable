@@ -88,7 +88,7 @@ dict = {}
 
 def create_dict(word,body, text):
     word_list = GetData.find_type(body, word)
-    print("word_list: ", word_list)
+    print("word_list!!: ", word_list)
 
     # iterate through the list of synonyms
     for item in word_list:
