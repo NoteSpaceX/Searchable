@@ -163,7 +163,8 @@ def entity():
         ment = tksd.askstring("Entity Search", "Enter your type search:", parent=master)
         s_word = str(ment).lower()
 
-        s_dict = Entity_Analysis.create_dict(s_word, the_text, the_text)
+        # s_dict = Entity_Analysis.create_dict(s_word, the_text, the_text)
+        s_dict = Entity_Analysis.create_dict(s_word, the_text)
         print(s_dict)
 
         if s_word not in s_dict:

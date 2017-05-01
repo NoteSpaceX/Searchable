@@ -59,12 +59,20 @@ class GetData:
             for argument in arguments:
                 entities = argument['entities']
                 for entity in entities:
+                    print('entity', entity)
                     entity_type = str.lower(entity['type'])
                     # entity_text = str.lower(entity['text'])
                     if entity_type == lower_search_word and entity['text'] not in word_types:
                         word_types.append(entity['text'])
-                        synonyms = Synonym_Search.synonyms(entity_type)
-                        print('synonyms: ', synonyms)
+                        # synonyms = Synonym_Search.synonyms(entity_type)
+                        synonyms_text = Synonym_Search.synonyms(entity['text'])
+                        print('synonyms: ', synonyms_text)
+                        synonyms = Synonym_Search.synonyms(entity['type'])
+                        for synonym in synonyms_text:
+                            lower_synonym = str.lower(synonym)
+                            lower_text_str = str.lower(text_str)
+                            if lower_synonym in lower_text_str and lower_synonym not in word_types:
+                                word_types.append(synonym)
                         for synonym in synonyms:
                             lower_synonym = str.lower(synonym)
                             lower_text_str = str.lower(text_str)
@@ -89,8 +97,11 @@ class GetData:
 dict = {}
 
 
-def create_dict(word,body, text):
-    word_list = GetData.find_type(body, word)
+# def create_dict(word, body, text):
+def create_dict(word, text):
+    print(word)
+    # word_list = GetData.find_type(body, word)
+    word_list = GetData.find_type(text, word)
     print("word_list!!: ", word_list)
 
     # iterate through the list of synonyms
@@ -109,9 +120,11 @@ def create_dict(word,body, text):
 
         # turn the list into tuple
         item_tuple = tuple(sublist)
-        if item in body and word not in dict:
+        # if item in body and word not in dict:
+        if item in text and word not in dict:
             dict[word] = [item_tuple]
-        elif word in dict and item in body and item_tuple not in dict[word]:
+        # elif word in dict and item in body and item_tuple not in dict[word]:
+        elif word in dict and item in text and item_tuple not in dict[word]:
             dict[word].append(item_tuple)
         print(dict)
     return dict
