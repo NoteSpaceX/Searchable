@@ -232,12 +232,9 @@ def levenshtein():
 
         word = str(ment).lower()
 
-
         l_dict = Levenshtein_Distance.find_word(word, other_word, the_text, the_text)
 
         print(l_dict)
-
-
 
         if len(l_dict.values()) == 0:
             print("hi")
