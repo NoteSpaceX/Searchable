@@ -171,8 +171,6 @@ def entity():
     text.tag_remove("tag", "1.0", END)
 
     the_text = text.get("1.0", END)
-    s_dict = {}
-    s_dict.clear()
 
     ment = tksd.askstring("Entity Search", "Enter your type search:", parent=master)
     s_word = str(ment).lower()
@@ -193,24 +191,20 @@ def entity():
 
         if len(s_dict.values()) == 0:
             return
-
-        elif s_word not in s_dict:
-            messagebox.showinfo("Entity Analysis", "Type not found.")
-            return
         else:
             word_speech = s_dict[s_word]
 
-        for item in word_speech:
-            print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
+            for item in word_speech:
+                print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
 
-            if item[2] is None:
-                continue
+                if item[2] is None:
+                    continue
 
-            else:
-                text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
-                text.tag_config("tag", background="green", foreground="black")
-        status.set("Entity search complete for: " + s_word)
-        s_dict.clear()
+                else:
+                    text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
+                    text.tag_config("tag", background="green", foreground="black")
+    status.set("Entity search complete for: " + s_word)
+    s_dict.clear()
 
 
 def levenshtein():
