@@ -153,6 +153,8 @@ def entity():
     text.tag_remove("tag", "1.0", END)
 
     the_text = text.get("1.0", END)
+    s_dict = {}
+    s_dict.clear()
 
     if len(the_text) == 1:
         messagebox.showinfo("Synonym", "No text in the editor.")
