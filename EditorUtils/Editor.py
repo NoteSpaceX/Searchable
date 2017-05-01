@@ -84,18 +84,27 @@ def search_synonyms():
     # get the text from the text editor
     the_text = text.get("1.0", END)
 
-    if len(the_text) == 1:
+    ment = tksd.askstring("Search Synonyms", "Enter your search:", parent=master)
+
+
+    if len(str(ment))== 0:
+        messagebox.showinfo("Synonym", "No text in the search.")
+        print("hi")
+        return
+    elif text.compare("end-1c", "==", "1.0"):
         messagebox.showinfo("Synonym", "No text in the editor.")
 
     else:
-        ment = tksd.askstring("Search Synonyms", "Enter your search:", parent=master)
+        # ment = tksd.askstring("Search Synonyms", "Enter your search:", parent=master)
 
         search_word = str(ment).lower()
 
         result_dict = Synonym_Search.word_to_concepts(the_text)
         print(result_dict)
 
-        if search_word not in result_dict:
+        if len(result_dict.values()) == 0:
+            return
+        elif search_word not in result_dict:
             messagebox.showinfo("Synonym", "Search word not found.")
             return
         else:
@@ -118,11 +127,17 @@ def part_speech():
     # get the text from the text editor
     the_text = text.get("1.0", END)
 
-    if len(the_text) == 1:
+    ment = tksd.askstring("Part of Speech Search", "Enter your grammar search:", parent=master)
+
+    if len(str(ment)) == 0:
+        messagebox.showinfo("Synonym", "No text in the search.")
+        print("hi")
+        return
+    elif text.compare("end-1c", "==", "1.0"):
         messagebox.showinfo("Synonym", "No text in the editor.")
         return
     else:
-        ment = tksd.askstring("Part of Speech Search", "Enter your grammar search:", parent=master)
+
         part_word = str(ment).lower()
 
         pos_acr_list = Part_Speech_Search.part_of_speech_to_tag(part_word)
@@ -130,8 +145,11 @@ def part_speech():
 
         print(r_dict)
 
-        if pos_acr_list is None:
-            messagebox.showinfo("Part of Speech", ment + " not found.")
+        if len(part_word) == 0:
+            print("Hi")
+            return
+        elif pos_acr_list is None:
+            messagebox.showinfo("Part of Speech", str(ment) + " not part of speech.")
             return
 
         for pos_acr in pos_acr_list:
@@ -156,18 +174,27 @@ def entity():
     s_dict = {}
     s_dict.clear()
 
-    if len(the_text) == 1:
+    ment = tksd.askstring("Entity Search", "Enter your type search:", parent=master)
+    s_word = str(ment).lower()
+
+    if len(str(ment)) == 0:
+        messagebox.showinfo("Synonym", "No text in the search.")
+        print("hi")
+        return
+    elif len(the_text) == 1:
         messagebox.showinfo("Synonym", "No text in the editor.")
         return
     else:
-        ment = tksd.askstring("Entity Search", "Enter your type search:", parent=master)
         s_word = str(ment).lower()
 
         # s_dict = Entity_Analysis.create_dict(s_word, the_text, the_text)
         s_dict = Entity_Analysis.create_dict(s_word, the_text)
         print(s_dict)
 
-        if s_word not in s_dict:
+        if len(s_dict.values()) == 0:
+            return
+
+        elif s_word not in s_dict:
             messagebox.showinfo("Entity Analysis", "Type not found.")
             return
         else:
@@ -191,35 +218,47 @@ def levenshtein():
 
     the_text = text.get("1.0", END)
 
+    ment = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
+    other_word = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
+
+    if len(str(ment)) == 0 or len(str(other_word)) == 0:
+        messagebox.showinfo("Synonym", "No text in the search.")
+        print("hi")
+        return
     if len(the_text) == 1:
         messagebox.showinfo("Synonym", "No text in the editor.")
         return
     else:
-        ment = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
+
         word = str(ment).lower()
-        other_word = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
+
 
         l_dict = Levenshtein_Distance.find_word(word, other_word, the_text, the_text)
 
         print(l_dict)
-        lev_distance = Levenshtein_Distance.minimum_edit_distance(word, other_word, the_text)[2]
 
-        if word not in the_text and other_word not in the_text:
+
+
+        if len(l_dict.values()) == 0:
+            print("hi")
+            return
+        elif word not in the_text and str(other_word) not in the_text:
             messagebox.showinfo("Levenshtein", "Word not in text.")
             return
         else:
+            lev_distance = Levenshtein_Distance.minimum_edit_distance(word, other_word, the_text)[2]
             messagebox.showinfo("Levenshtein distance", lev_distance)
 
-        word_list = l_dict[word]
+            word_list = l_dict[word]
 
-        for item in word_list:
-            print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
-            if item[2] is None:
-                continue
+            for item in word_list:
+                print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
+                if item[2] is None:
+                    continue
 
-            else:
-                text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
-                text.tag_config("tag", background="green", foreground="black")
+                else:
+                    text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
+                    text.tag_config("tag", background="green", foreground="black")
 
         status.set("Levenshtein distance for : " + word + " " + other_word)
 
