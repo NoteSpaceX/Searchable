@@ -86,7 +86,6 @@ def search_synonyms():
 
     ment = tksd.askstring("Search Synonyms", "Enter your search:", parent=master)
 
-
     if len(str(ment))== 0:
         messagebox.showinfo("Synonym", "No text in the search.")
         print("hi")
@@ -100,7 +99,7 @@ def search_synonyms():
         search_word = str(ment).lower()
 
         result_dict = Synonym_Search.word_to_concepts(the_text)
-        print(result_dict)
+        print('result_dict: ', result_dict)
 
         if len(result_dict.values()) == 0:
             return

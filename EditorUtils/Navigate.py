@@ -14,9 +14,12 @@ class Navigate:
         # for line_list in text:
         #     line_list = text.split("\n")
         line_list = text.split("\n")
+        print('line_list', line_list)
+        print('line_list length: ', len(line_list))
 
         for i in range(0, len(line_list)):
             item = line_list[i].split(" ")
+            print(item)
             j = 0
 
             for k in range(0, len(item)):
