@@ -108,33 +108,38 @@ def create_dict(word, text):
 
     # iterate through the list of synonyms
 
-    for word in word_list:
-        sublist = []
-        for each_word in text_words:
-            print('word: ', word)
-            print('each_word: ', each_word)
 
-            if word == each_word:
+
+    sublist = []
+    for word_from_list in word_list:
+
+        for each_word in text_words:
+            # print('word: ', word)
+            # print('each_word: ', each_word)
+
+            if word_from_list == each_word:
                 # make sure not getting the same word
                 # if not word == word:
-                print("I'm in")
+                # print("I'm in")
 
+                # print(word_from_list)
                 # make a list and add word, page number, column number to it
-                sublist.append(word)
-                # print('line#', Navigate.Navigate.get_line(word, text))
-                # sublist.append(Navigate.Navigate.get_line(word, text))
-                print('column#', Navigate.Navigate.get_specific_column_number(word, text))
-                sublist.append(Navigate.Navigate.get_specific_column_number(word, text))
+                if word_from_list not in sublist:
+                    sublist.append(word_from_list)
+                    # print('line#', Navigate.Navigate.get_line(word, text))
+                    # sublist.append(Navigate.Navigate.get_line(word, text))
+                    print('column#', Navigate.Navigate.get_tuple(word_from_list , text))
+                    sublist.append(Navigate.Navigate.get_tuple(word_from_list, text))
 
-                # turn the list into tuple
-                item_tuple = tuple(sublist)
+                    # turn the list into tuple
+                    # item_tuple = tuple(sublist)
                 # if word in body and word not in dict:
-                if word in text and word not in dict:
-                    dict[word] = [item_tuple]
+                if word_from_list in text and word_from_list not in dict:
+                    dict[word] = sublist
                 # elif word in dict and word in body and item_tuple not in dict[word]:
-                elif word in dict and word in text and item_tuple not in dict[word]:
-                    dict[word].append(item_tuple)
-        print("Dictionary:", dict)
+                elif word_from_list in dict and sublist not in dict[word_from_list]:
+                    dict[word_from_list].append(sublist)
+        # print("Dictionary:", dict)
     return dict
 
 #

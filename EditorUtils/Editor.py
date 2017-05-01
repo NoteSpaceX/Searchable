@@ -1,7 +1,10 @@
+import numbers
 import tkinter.simpledialog as tksd
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
+
+from pyparsing import basestring
 
 from EditorUtils import Status_Bar
 from SearchFeatures import Edit_Distance_For_Sentences, Entity_Analysis, Synonym_Search, Part_Speech_Search, \
@@ -116,6 +119,7 @@ def search_synonyms():
             if item[2] is None:
                 continue
             else:
+                print(("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2])))
                 text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
                 text.tag_config("tag", background="yellow", foreground="black")
         status.set("Synonym search complete for: " + search_word)
@@ -185,24 +189,40 @@ def entity():
     else:
         s_word = str(ment).lower()
 
-        # s_dict = Entity_Analysis.create_dict(s_word, the_text, the_text)
+        # returns a dictionary
         s_dict = Entity_Analysis.create_dict(s_word, the_text)
         print(s_dict)
 
         if len(s_dict.values()) == 0:
             return
         else:
+
+            # list of values
             word_speech = s_dict[s_word]
+            print("word- speech",word_speech)
 
-            for item in word_speech:
-                print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
+            # get inside the tuple
+            for element in word_speech:
 
-                if item[2] is None:
-                    continue
+                # check if it is a list
+                if not isinstance(element, basestring):
+                    print("hi")
+                    # loop through the list
+
+                    # looking at the tuples
+                    for item in element:
+
+                        # if item[2] is None:
+                        #     continue
+                        if type(item) is tuple:
+                            print(("tag", str(item[0]) + "." + str(item[1]), str(item[0]) + "." + str(item[1] + word_len)))
+                            text.tag_add("tag", str(item[0]) + "." + str(item[1]), str(item[0]) + "." + str(item[1] + word_len))
+                            text.tag_config("tag", background="green", foreground="black")
+                        else:
+                            continue
 
                 else:
-                    text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
-                    text.tag_config("tag", background="green", foreground="black")
+                    word_len = (len(element))
     status.set("Entity search complete for: " + s_word)
     s_dict.clear()
 
