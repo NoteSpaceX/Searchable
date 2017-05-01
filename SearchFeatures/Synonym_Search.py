@@ -16,7 +16,8 @@ def synonyms(word):
 dict = {}
 
 
-def find_word(word, body, the_text):
+# def find_word(word, body, the_text):
+def find_word(word, the_text):
     word_list = synonyms(word)
 
     # iterate through the list of synonyms
@@ -32,15 +33,18 @@ def find_word(word, body, the_text):
 
             # turn the list into tuple
             item_tuple = tuple(sublist)
-            if item in body and word not in dict:
+            # if item in body and word not in dict:
+            if item in the_text and word not in dict:
                 dict[word] = [item_tuple]
-            elif word in dict and item in body and item_tuple not in dict[word]:
+            elif word in dict and item in the_text and item_tuple not in dict[word]:
                 dict[word].append(item_tuple)
 
 
-def word_to_concepts(text, the_text):
-    text = text.split()
-
-    for item in text:
-        find_word(item, text, the_text)
+def word_to_concepts(text):
+    print(type(text))
+    words = text.split()
+    print('text after split: ', text)
+    for word in words:
+        print('word: ', word)
+        find_word(word, text)
     return dict

@@ -92,7 +92,7 @@ def search_synonyms():
 
         search_word = str(ment).lower()
 
-        result_dict = Synonym_Search.word_to_concepts(the_text, the_text)
+        result_dict = Synonym_Search.word_to_concepts(the_text)
         print(result_dict)
 
         if search_word not in result_dict:
