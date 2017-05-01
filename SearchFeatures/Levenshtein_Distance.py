@@ -33,23 +33,24 @@ def find_word(word, other_word, body, the_text):
 
 
     # iterate through the list of synonyms
-    for item in lev_list:
-        sublist = []
+    if lev_list is not None:
+        for item in lev_list:
+            sublist = []
 
-        if isinstance(item,numbers.Number):
-            continue
+            if isinstance(item,numbers.Number):
+                continue
 
-        # make a list and add item, page number, column number to it
-        sublist.append(item)
-        sublist.append(Navigate.Navigate.get_line(item, the_text))
-        sublist.append(Navigate.Navigate.get_specific_column_number(item, the_text))
+            # make a list and add item, page number, column number to it
+            sublist.append(item)
+            sublist.append(Navigate.Navigate.get_line(item, the_text))
+            sublist.append(Navigate.Navigate.get_specific_column_number(item, the_text))
 
-        # turn the list into tuple
-        item_tuple = tuple(sublist)
-        if item in body and word not in dict:
-            dict[word] = [item_tuple]
-        elif word in dict and item in body and item_tuple not in dict[word]:
-            dict[word].append(item_tuple)
+            # turn the list into tuple
+            item_tuple = tuple(sublist)
+            if item in body and word not in dict:
+                dict[word] = [item_tuple]
+            elif word in dict and item in body and item_tuple not in dict[word]:
+                dict[word].append(item_tuple)
 
     return dict
 
