@@ -94,13 +94,10 @@ class GetData:
 # sentiment = GetData.get_sentiment(text_str)
 # print(sentiment)
 
-dict = {}
 
-
-# def create_dict(word, body, text):
 def create_dict(word, text):
+    dict = {}
     print(word)
-    # word_list = GetData.find_type(body, word)
     word_list = GetData.find_type(text, word)
     print("word_list!!: ", word_list)
 
