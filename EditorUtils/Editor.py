@@ -5,7 +5,7 @@ from tkinter import messagebox
 
 from EditorUtils import Status_Bar
 from SearchFeatures import Edit_Distance_For_Sentences, Entity_Analysis, Synonym_Search, Part_Speech_Search, \
-    Levenshtein_Distance
+    Levenshtein_Distance_3
 
 # TODO: highlight repeated words (make sure)
 # TODO: Ignroe punctuation
@@ -177,11 +177,11 @@ def entity():
     ment = tksd.askstring("Entity Search", "Enter your type search:", parent=master)
     s_word = str(ment).lower()
 
-    if len(str(ment)) == 0:
+    if text.compare("end-1c", "==", "1.0"):
         messagebox.showinfo("Synonym", "No text in the search.")
         print("hi")
         return
-    elif len(the_text) == 1:
+    elif text.compare("end-1c", "==", "1.0"):
         messagebox.showinfo("Synonym", "No text in the editor.")
         return
     else:
@@ -219,33 +219,31 @@ def levenshtein():
     the_text = text.get("1.0", END)
 
     ment = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
-    other_word = tksd.askstring("Levenshtein Calculation", "Enter your levenshtein distance search:", parent=master)
+    max_distance = tksd.askstring("Levenshtein Calculation", "Enter the upper bound for the levenshtein distance search:", parent=master)
 
-    if len(str(ment)) == 0 or len(str(other_word)) == 0:
+    if len(str(ment)) == 0:
         messagebox.showinfo("Synonym", "No text in the search.")
         print("hi")
         return
-    if len(the_text) == 1:
+    if text.compare("end-1c", "==", "1.0"):
         messagebox.showinfo("Synonym", "No text in the editor.")
         return
     else:
 
         word = str(ment).lower()
+        max_distance = int(max_distance)
 
-        l_dict = Levenshtein_Distance.find_word(word, other_word, the_text, the_text)
+        l_dict = Levenshtein_Distance_3.find_word(word,max_distance,the_text)
 
         print(l_dict)
 
         if len(l_dict.values()) == 0:
             print("hi")
             return
-        elif word not in the_text and str(other_word) not in the_text:
+        elif word not in the_text:
             messagebox.showinfo("Levenshtein", "Word not in text.")
             return
         else:
-            lev_distance = Levenshtein_Distance.minimum_edit_distance(word, other_word, the_text)[2]
-            messagebox.showinfo("Levenshtein distance", lev_distance)
-
             word_list = l_dict[word]
 
             for item in word_list:
@@ -257,7 +255,7 @@ def levenshtein():
                     text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
                     text.tag_config("tag", background="green", foreground="black")
 
-        status.set("Levenshtein distance for : " + word + " " + other_word)
+        status.set("Levenshtein distance for : " + word + " " + str(max_distance))
 
 
 def edit_distance_for_sentence():

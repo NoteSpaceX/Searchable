@@ -5,11 +5,6 @@ import numbers
 
 from EditorUtils import Navigate
 
-
-
-#Todo: 'NoneType' object is not iterable
-
-
 def _edit_dist_init(len1, len2):
     lev = []
     for i in range(len1):
@@ -64,11 +59,12 @@ def edit_distance(s1, the_text, max_distance):
         return leven_distances
 
 
-dict = {}
 
 
-def find_word(word, body, the_text, max_distance):
-    lev_list = edit_distance(word, body, max_distance)
+
+def find_word(word,max_distance,  the_text):
+    dict = {}
+    lev_list = edit_distance(word, the_text, max_distance)
 
     # iterate through the list of synonyms
     for item in lev_list:
@@ -84,13 +80,13 @@ def find_word(word, body, the_text, max_distance):
 
         # turn the list into tuple
         item_tuple = tuple(sublist)
-        if item in body and word not in dict:
+        if item in the_text and word not in dict:
             dict[word] = [item_tuple]
-        elif word in dict and item in body and item_tuple not in dict[word]:
+        elif word in dict and item in the_text and item_tuple not in dict[word]:
             dict[word].append(item_tuple)
 
     return dict
 
-print(edit_distance("kitten", "hey kitten sitting", 5))
-print(find_word("kitten","hey kitten sitting","hey kitten sitting", 5))
+# print(edit_distance("kitten", "hey kitten sitting", 5))
+# print(find_word("kitten","hey kitten sitting","hey kitten sitting", 5))
 #print(minimum_edit_distance("Sunday", "Saturday"))
