@@ -41,10 +41,7 @@ def find_word(word, the_text):
 
 
 def word_to_concepts(text):
-    print(type(text))
     words = text.split()
-    print('text after split: ', text)
     for word in words:
-        print('word: ', word)
         find_word(word, text)
     return dict
