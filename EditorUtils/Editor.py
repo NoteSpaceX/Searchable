@@ -8,7 +8,7 @@ from pyparsing import basestring
 
 from EditorUtils import Status_Bar
 from SearchFeatures import Edit_Distance_For_Sentences, Entity_Analysis, Synonym_Search, Part_Speech_Search, \
-    Sentence_Structure_Search
+    Sentence_Structure_Search, Levenshtein_Distance_3
 
 # TODO: highlight repeated words (make sure)
 # TODO: Ignroe punctuation
@@ -120,7 +120,7 @@ def search_synonyms():
             else:
                 print(("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2])))
                 text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
-                text.tag_config("tag", background="yellow", foreground="black")
+                text.tag_config("tag", background="#b3b3cc", foreground="black")
         status.set("Synonym search complete for: " + search_word)
 
 
@@ -166,7 +166,7 @@ def part_speech():
                     else:
                         text.tag_add("tag", str(item[1]) + "." + str(item[2]),
                                      str(item[1]) + "." + str(len(item[0]) + item[2]))
-                        text.tag_config("tag", background="orange", foreground="black")
+                        text.tag_config("tag", background="light blue", foreground="black")
         status.set("Part of speech search complete for:  " + part_word)
 
 
@@ -216,7 +216,7 @@ def entity():
                         if type(item) is tuple:
                             print(("tag", str(item[0]) + "." + str(item[1]), str(item[0]) + "." + str(item[1] + word_len)))
                             text.tag_add("tag", str(item[0]) + "." + str(item[1]), str(item[0]) + "." + str(item[1] + word_len))
-                            text.tag_config("tag", background="green", foreground="black")
+                            text.tag_config("tag", background="light green", foreground="black")
                         else:
                             continue
 
@@ -246,7 +246,8 @@ def levenshtein():
         word = str(ment).lower()
         max_distance = int(max_distance)
 
-        l_dict = Levenshtein_Distance_3.find_word(word,max_distance,the_text)
+        if Levenshtein_Distance_3.find_word(word,max_distance,the_text) is not None:
+            l_dict = Levenshtein_Distance_3.find_word(word,max_distance,the_text)
 
         print(l_dict)
 
@@ -266,25 +267,25 @@ def levenshtein():
 
                 else:
                     text.tag_add("tag", str(item[1]) + "." + str(item[2]), str(item[1]) + "." + str(len(item[0]) + item[2]))
-                    text.tag_config("tag", background="green", foreground="black")
+                    text.tag_config("tag", background="light pink", foreground="black")
 
-        status.set("Levenshtein distance for : " + word + " " + str(max_distance))
+        status.set("Levenshtein distance for : " + word + " - " + str(max_distance))
 
 
 def edit_distance_for_sentence():
     text.tag_remove("tag", "1.0", END)
     the_text = text.get("1.0", END)
 
-    sentence_one = tksd.askstring("Edit Distance for Sentence", "Enter your levenshtein distance search:",
+    sentence_one = tksd.askstring("Similar Structure - Sentence", "Enter a sentence for similar structure search:",
                                   parent=master)
 
-    max_distance = tksd.askstring("Edit Distance for Sentence",
-                                  "Enter the upper bound for the levenshtein distance search:", parent=master)
+    max_distance = tksd.askstring("Similar Structure - Sentence",
+                                  "Enter the upper bound for similar structure search:", parent=master)
 
     max_distance = int(max_distance)
 
     if len(the_text) == 1:
-        messagebox.showinfo("Synonym", "No text in the editor.")
+        messagebox.showinfo("Similar Structure - Sentence", "No text in the editor.")
         return
     else:
         result_list = Sentence_Structure_Search.create_list(sentence_one, the_text, max_distance)
@@ -292,7 +293,9 @@ def edit_distance_for_sentence():
         for item in result_list:
             print("item, " ,item)
             text.tag_add("tag", item[0], item[1])
-            text.tag_config("tag", background="green", foreground="black")
+            text.tag_config("tag", background="purple", foreground="black")
+
+        status.set("Edit Distance for Sentence: " + sentence_one + "  - " + str(max_distance))
 
 
         # distance_value = Edit_Distance_For_Sentences.LDforSentences(sentence_one, sentence_two)
@@ -302,7 +305,7 @@ def edit_distance_for_sentence():
         # else:
         #     messagebox.showinfo("Edit Distance for Sentence", "Sentence not in text.")
         #
-        # status.set("Edit Distance for Sentence: " + sentence_one + " " + sentence_two)
+
 
 
 def get_sentiment():
