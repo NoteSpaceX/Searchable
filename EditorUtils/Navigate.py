@@ -1,3 +1,6 @@
+import re
+
+
 class Navigate:
     # way to get the line number of something we want
     # @staticmethod
@@ -87,3 +90,54 @@ class Navigate:
                     #     if k+m < len(item)-1:
                     #         if item[k+m] != word[k+m]:
                     #             j += len(item[k]) + 1
+    # @staticmethod
+    # def get_sentence_line_col(sentence_list, text):
+    #
+    #     for sentence in sentence_list:
+    #         # we have the very first number for each of the tuples
+    #         start_list = [m.start() for m in re.finditer(sentence, text)]
+    #         end_list = [m.end() for m in re.finditer(sentence, text)]
+    #         print("start list ", start_list)
+    #         print("end list", end_list)
+    #
+    #
+        # text_list = text.split(".")
+        #
+        # for sentence_text in text_list:
+        #     for sentence in sentence_list:
+        #         if sentence == sentence_text:
+
+
+
+    # @staticmethod
+    # def get_sentence(sentence, text):
+    #         # sentence_list = []
+    #         # if sentence in text:
+    #         #     word = sentence.split(" ")
+    #         #     last_index = len(word) -1
+    #         #     for item in range(0, len(word)):
+    #         #         sentence_list.append((Navigate.get_line(word[0], text), Navigate.get_specific_column_number(word[0], text)))
+    #         #         sentence_list.append((Navigate.get_line(word[last_index],text),Navigate.get_specific_column_number(word[last_index], text)))
+    #         # return sentence_list
+    #         line_list = text.split("\n")
+    #
+    #         column_list = []
+    #
+    #         for i in range(0, len(line_list)):
+    #             item = line_list[i].split(".")
+    #             j = 0
+    #
+    #             for k in range(0, len(item)):
+    #                 if " " not in word:
+    #                     if item[k] == word:
+    #                         column_list.append((i + 1, j))
+    #                     j += len(item[k]) + 1
+    #                 # for search phrase with more than one word
+    #                 else:
+    #                     word_list = word.split(" ")
+    #                     for num in range(0, len(word_list)):
+    #                         if k + num < len(item) - 1:
+    #                             if word_list[num] == item[k + num]:
+    #                                 column_list.append((i + 1, j))
+    #                     j += len(item[k]) + 1
+    #         return column_list

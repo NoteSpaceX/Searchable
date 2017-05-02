@@ -8,7 +8,7 @@ from pyparsing import basestring
 
 from EditorUtils import Status_Bar
 from SearchFeatures import Edit_Distance_For_Sentences, Entity_Analysis, Synonym_Search, Part_Speech_Search, \
-    Levenshtein_Distance_3
+    Sentence_Structure_Search
 
 # TODO: highlight repeated words (make sure)
 # TODO: Ignroe punctuation
@@ -275,22 +275,34 @@ def edit_distance_for_sentence():
     text.tag_remove("tag", "1.0", END)
     the_text = text.get("1.0", END)
 
+    sentence_one = tksd.askstring("Edit Distance for Sentence", "Enter your levenshtein distance search:",
+                                  parent=master)
+
+    max_distance = tksd.askstring("Edit Distance for Sentence",
+                                  "Enter the upper bound for the levenshtein distance search:", parent=master)
+
+    max_distance = int(max_distance)
+
     if len(the_text) == 1:
         messagebox.showinfo("Synonym", "No text in the editor.")
         return
     else:
-        sentence_one = tksd.askstring("Edit Distance for Sentence", "Enter your levenshtein distance search:",parent=master)
+        result_list = Sentence_Structure_Search.create_list(sentence_one, the_text, max_distance)
+        print('result ', result_list)
+        for item in result_list:
+            print("item, " ,item)
+            text.tag_add("tag", item[0], item[1])
+            text.tag_config("tag", background="green", foreground="black")
 
-        sentence_two = tksd.askstring("Edit Distance for Sentence", "Enter your levenshtein distance search:",parent=master)
 
-        distance_value = Edit_Distance_For_Sentences.LDforSentences(sentence_one, sentence_two)
+        # distance_value = Edit_Distance_For_Sentences.LDforSentences(sentence_one, sentence_two)
 
-        if sentence_one in the_text and sentence_two in the_text:
-            messagebox.showinfo("Edit Distance for Sentence", distance_value)
-        else:
-            messagebox.showinfo("Edit Distance for Sentence", "Sentence not in text.")
-
-        status.set("Edit Distance for Sentence: " + sentence_one + " " + sentence_two)
+        # if sentence_one in the_text:
+        #     messagebox.showinfo("Edit Distance for Sentence", distance_value)
+        # else:
+        #     messagebox.showinfo("Edit Distance for Sentence", "Sentence not in text.")
+        #
+        # status.set("Edit Distance for Sentence: " + sentence_one + " " + sentence_two)
 
 
 def get_sentiment():
