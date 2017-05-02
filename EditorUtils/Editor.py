@@ -293,7 +293,7 @@ def edit_distance_for_sentence():
         for item in result_list:
             print("item, " ,item)
             text.tag_add("tag", item[0], item[1])
-            text.tag_config("tag", background="purple", foreground="black")
+            text.tag_config("tag", background="#ff8080", foreground="black")
 
         status.set("Edit Distance for Sentence: " + sentence_one + "  - " + str(max_distance))
 
