@@ -15,7 +15,7 @@ def LDforSentences(s1, the_text, max_distance):
     result = []
     dict = {"DT": 0, "PDT": 0, "CD": 1, "NN": 1, "NNS": 1, "NNP": 1, "NNPS": 1, "POS": 1, "PRP": 2, "PRP$": 2, "JJ": 3,
             "JJR": 3, "JJS": 3, "VB": 4, "VBD": 4, "VBG": 4, "VBN": 4, "VBP": 4, "VBZ": 4, "RB": 5, "RBR": 5, "RBS": 5,
-            "CC": 6, "IN": 6, "EX": 7, "WDT": 8, "WP": 8, "WP$": 8, "WRB": 8, "FW": 9, "SYM": 9}
+            "CC": 6, "IN": 6, "EX": 7, "WDT": 8, "WP": 8, "WP$": 8, "WRB": 8, "FW": 9, "SYM": 9, "TO":0, "RP":0}
 
     for i in tags1:
         # store the parts of speech at each word position for l1 in a list
@@ -49,8 +49,10 @@ def LDforSentences(s1, the_text, max_distance):
         elif l2 > l1:
             for i in range(0, l1):
                 ld = abs(dict[ps1[i]] - dict[ps2[i]]) + ld
+            print("The dictionary", dict)
             for i in range(l1, l2):
                 ld = ld + dict[ps2[i]]
+            print("The dictionary", dict)
         else:
             for i in range(0, l1):
                 ld = abs(dict[ps1[i]] - dict[ps2[i]]) + ld
@@ -94,7 +96,7 @@ def create_list(search_sentence, the_text, max_distance):
     return the_list
 
 # print("ld for sentences: ", LDforSentences("i am a cat.", "i am a cat. i am a dog. you are a pig. my name is james.", 0))
-print(create_list("i am a cat.", "i am a cat.\n i am a dog. you are a pig. \n my name is james. i am a ham." , 10))
+print(create_list("i am a cat.", "i am a cat.\n i am a dog. you are a pig. \n my name is james. i am a ham." , 3))
 
 
 
