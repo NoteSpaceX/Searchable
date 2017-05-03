@@ -57,22 +57,3 @@ def make_dict(body, text):
                 new_dict[key].append(item_tuple)
 
     return new_dict
-
-
-# def main():
-#     # print("Enter a file name: ")
-#     # file_name = raw_input()
-#     text_file = open("sample.txt", 'r')
-#     text = text_file.read()
-#
-#     dict = Categorize.text_dictionary(text)
-#     print(dict)
-#
-#     new_dict = make_dict("", text)
-#     print(new_dict)
-#
-#
-# if __name__ == "__main__":
-#     main()
-#
-
