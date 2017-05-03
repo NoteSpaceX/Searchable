@@ -5,14 +5,19 @@ import numbers
 
 from EditorUtils import Navigate
 
+
 def _edit_dist_init(len1, len2):
     lev = []
+    # initialize 2D array to zero
     for i in range(len1):
-        lev.append([0] * len2)  # initialize 2D array to zero
+        lev.append([0] * len2)
+
+    # column 0: 0,1,2,3,4,...
     for i in range(len1):
-        lev[i][0] = i           # column 0: 0,1,2,3,4,...
+        lev[i][0] = i
+    # row 0: 0,1,2,3,4,...
     for j in range(len2):
-        lev[0][j] = j           # row 0: 0,1,2,3,4,...
+        lev[0][j] = j
     return lev
 
 
@@ -59,9 +64,6 @@ def edit_distance(s1, the_text, max_distance):
         return leven_distances
 
 
-
-
-
 def find_word(word,max_distance,  the_text):
     dict = {}
     lev_list = edit_distance(word, the_text, max_distance)
@@ -70,7 +72,7 @@ def find_word(word,max_distance,  the_text):
     for item in lev_list:
         sublist = []
 
-        if isinstance(item,numbers.Number):
+        if isinstance(item, numbers.Number):
             continue
 
         # make a list and add item, page number, column number to it
