@@ -88,7 +88,3 @@ def find_word(word,max_distance,  the_text):
             dict[word].append(item_tuple)
 
     return dict
-
-# print(edit_distance("kitten", "hey kitten sitting", 5))
-# print(find_word("kitten","hey kitten sitting","hey kitten sitting", 5))
-#print(minimum_edit_distance("Sunday", "Saturday"))

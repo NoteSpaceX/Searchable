@@ -2,13 +2,12 @@ import nltk
 from nltk import tokenize, re
 
 
-def LDforSentences(sentence, the_text, max_distance):
+def ld_for_sentences(sentence, the_text, max_distance):
     # store each word in an array
     sentence_word = sentence.split()
     tags1 = nltk.pos_tag(sentence_word)
     word_length = len(sentence_word)
     list_one = []
-    list_two = []
     result = []
     dict = {"DT": 0, "PDT": 0, "CD": 1, "NN": 1, "NNS": 1, "NNP": 1, "NNPS": 1, "POS": 1, "PRP": 2, "PRP$": 2, "JJ": 3,
             "JJR": 3, "JJS": 3, "VB": 4, "VBD": 4, "VBG": 4, "VBN": 4, "VBP": 4, "VBZ": 4, "RB": 5, "RBR": 5, "RBS": 5,
@@ -41,10 +40,8 @@ def LDforSentences(sentence, the_text, max_distance):
         elif other_word_length > word_length:
             for item in range(0, word_length):
                 distance = abs(dict[list_one[item]] - dict[list_two[item]]) + distance
-            print("The dictionary", dict)
             for item in range(word_length, other_word_length):
                 distance = distance + dict[list_two[item]]
-            print("The dictionary", dict)
         else:
             for item in range(0, word_length):
                 distance = abs(dict[list_one[item]] - dict[list_two[item]]) + distance
@@ -57,26 +54,20 @@ def LDforSentences(sentence, the_text, max_distance):
 def create_list(search_sentence, the_text, max_distance):
     the_list = []
 
-    sentence_list = LDforSentences(search_sentence, the_text, max_distance)
+    sentence_list = ld_for_sentences(search_sentence, the_text, max_distance)
     text_list = the_text.split("\n")
 
     for sentence in sentence_list:
         line_num = 1
-        print('text list', text_list)
         for text_sentence in text_list:
 
-            # we have the very first number for each of the tuples
+            # the very first number for each of the tuples
             start_list = [m.start() for m in re.finditer(sentence, text_sentence)]
             end_list = [m.end() for m in re.finditer(sentence, text_sentence)]
 
             if len(start_list) is not 0:
                 the_list.append((str(line_num) + "." + str(start_list[0]), (str(line_num)) + "." + str(end_list[0])))
 
-            print(line_num)
             line_num += 1
     return the_list
-
-
-# print("ld for sentences: ", LDforSentences("i am a cat.", "i am a cat. i am a dog. you are a pig. my name is james.", 0))
-print(create_list("i am a cat.", "i am a cat.\n i am a dog. you are a pig. \n my name is james. i am a ham." , 3))
 

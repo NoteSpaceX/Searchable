@@ -12,11 +12,9 @@ class Navigate:
     def get_specific_column_number(word, text):
         line_list = text.split("\n")
         print('line_list', line_list)
-        print('line_list length: ', len(line_list))
 
         for line in range(0, len(line_list)):
             line_word = line_list[line].split(" ")
-            print(word)
             column_position = 0
 
             for char in range(0, len(line_word)):

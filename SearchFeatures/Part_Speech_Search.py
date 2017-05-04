@@ -25,6 +25,7 @@ class Categorize:
         return result
 
 
+# convert specific acronyms to usable words
 def part_of_speech_to_tag(part_of_speech):
     tag = {'conjunction': ['CC'], 'number': ['CD'], 'determiner': ['DT'], 'preposition': ['IN'],
            'adjective': ['JJ', 'JJR', 'JJS'], 'noun': ['NN', 'NNS', 'NNP', 'NNPS'], 'pronoun': ['PRP', 'PRP$'],
@@ -35,10 +36,8 @@ def part_of_speech_to_tag(part_of_speech):
 
 
 def make_dict(body, text):
-    # take the categorize dictionary
     categorize_dict = Categorize.text_dictionary(text)
-    
-    # make the new dictionary that we will return
+
     new_dict = {}
     
     # iterate through the current dictionary
