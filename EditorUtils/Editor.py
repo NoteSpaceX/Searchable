@@ -125,7 +125,6 @@ def part_speech():
 
     if len(str(user_input)) == 0:
         messagebox.showinfo("Part of Speech Search", "No text in the search.")
-        print("hi")
         return
     elif text.compare("end-1c", "==", "1.0"):
         messagebox.showinfo("Part of Speech Search", "No text in the editor.")
@@ -249,7 +248,6 @@ def word_structure_search():
                 print("word: " + str(item[0]) + " line: " + str(item[1]) + " , " + " column: " + str(item[2]))
                 if item[2] is None:
                     continue
-
                 else:
                     text.tag_add("tag", str(item[1]) + "." + str(item[2]),
                                  str(item[1]) + "." + str(len(item[0]) + item[2]))
@@ -280,7 +278,6 @@ def sentence_structure_search():
         result_list = Sentence_Structure_Search.create_list(sentence_one, the_text, max_distance)
         print('result ', result_list)
         for item in result_list:
-            print("item, ", item)
             text.tag_add("tag", item[0], item[1])
             text.tag_config("tag", background="#ff8080", foreground="black")
 

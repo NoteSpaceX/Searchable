@@ -7,6 +7,7 @@ from SearchFeatures import Synonym_Search, credentials
 
 
 class GetData:
+    # Not used
     @staticmethod
     def classifier(text_str):
         base_url = 'https://gateway.watsonplatform.net/natural-language-classifier/api/v1/classifiers/10D41B-nlc-1/classify?text='
@@ -55,13 +56,14 @@ class GetData:
                     if entity_type == lower_search_word and entity['text'] not in word_types:
                         word_types.append(entity['text'])
                         synonyms_text = Synonym_Search.synonyms(entity['text'])
-                        print('synonyms: ', synonyms_text)
                         synonyms = Synonym_Search.synonyms(entity['type'])
+                        # Using synonyms of words in text
                         for synonym in synonyms_text:
                             lower_synonym = str.lower(synonym)
                             lower_text_str = str.lower(text_str)
                             if lower_synonym in lower_text_str and lower_synonym not in word_types:
                                 word_types.append(synonym)
+                        # Using synonyms of results
                         for synonym in synonyms:
                             lower_synonym = str.lower(synonym)
                             lower_text_str = str.lower(text_str)

@@ -1,9 +1,8 @@
 import numbers
 
 from EditorUtils import Navigate
+# File not being used
 
-
-#Todo: 'NoneType' object is not iterable
 
 def minimum_edit_distance(s1, s2, the_text):
     # if the words in the text
@@ -13,7 +12,7 @@ def minimum_edit_distance(s1, s2, the_text):
         distances = range(len(s1) + 1)
         for index2,char2 in enumerate(s2):
             new_distances = [index2+1]
-            for index1,char1 in enumerate(s1):
+            for index1, char1 in enumerate(s1):
                 if char1 == char2:
                     new_distances.append(distances[index1])
                 else:
@@ -30,7 +29,6 @@ dict = {}
 
 def find_word(word, other_word, body, the_text):
     lev_list = minimum_edit_distance(word, other_word, body)
-
 
     # iterate through the list of synonyms
     if lev_list is not None:
@@ -53,7 +51,3 @@ def find_word(word, other_word, body, the_text):
                 dict[word].append(item_tuple)
 
     return dict
-
-print(minimum_edit_distance("kitten", "sitting", "hey kitten sitting"))
-print(find_word("kitten","sitting","hey kitten sitting","hey kitten sitting"))
-# print(minimumEditDistance("Sunday", "Saturday"))

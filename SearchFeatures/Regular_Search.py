@@ -1,4 +1,5 @@
 from EditorUtils import Navigate
+# not implemented in editor
 
 
 def word_search(search_word, text):
@@ -8,13 +9,9 @@ def word_search(search_word, text):
     for word in words:
         if search_word in word:
             word_list.append(word)
-    print(word_list)
+    # make a list and add item, page number, column number to it
     for w in word_list:
-        sublist = []
-        # make a list and add item, page number, column number to it
-        sublist.append(w)
-        sublist.append(Navigate.Navigate.get_line(w, text))
-        sublist.append(Navigate.Navigate.get_specific_column_number(w, text))
+        sublist = [w, Navigate.Navigate.get_line(w, text), Navigate.Navigate.get_specific_column_number(w, text)]
 
         # turn the list into tuple
         item_tuple = tuple(sublist)
@@ -24,5 +21,3 @@ def word_search(search_word, text):
         elif word in dict and w in text and item_tuple not in dict[word]:
             dict[word].append(item_tuple)
     return dict
-
-#print(word_search("view","hello i viewed your views with a great view"))
