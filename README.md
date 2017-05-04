@@ -2,8 +2,8 @@
 
 A python text editor created using Tkinter, with complex search features. <br/>
 Search for:
-  * Synonym - nltk
-  * Entity - Watson IBM Bluemix Natural Language Processing and nltk
+  * Synonym - NLTK
+  * Entity - Watson IBM Bluemix Natural Language Processing and NLTK
   * Part of Speech - nltk
   * Similar Word Structure - Levenshtein Distance 
   * Similar Sentence Structure - Based on Levenshtein Distance but implements our own scoring techniques
