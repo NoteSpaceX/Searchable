@@ -12,7 +12,7 @@ Search for:
 - Prajakti Jinachandran 
 - Anna Buyevich
 - Devanshi Pratap
-(And thank you to our Project Manager Aneesh Durg!)
+- (And thank you to our Project Manager Aneesh Durg!)
 
 ### License
 This project is licensed under the MIT License - see the LICENSE.md file for details
